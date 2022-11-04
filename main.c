@@ -76,6 +76,7 @@ int exec_cmd(char **args, char *env[])
 	{
 		location = _which(args[0], env);
 		execve(location, args, NULL);
+		free(location);
 		exit(1);
 	}
 	else if (ch_pid > 0)
@@ -91,7 +92,7 @@ int exec_cmd(char **args, char *env[])
 		perror("bye\n");
 		exit(1);
 	}
-
+	free(location);
 	return (0);
 }
 
@@ -113,20 +114,21 @@ char *_which(char *search_var, char **env)
 
 		paths = split_lines(s, ":");
 
-		char *strA = malloc(sizeof(search_var) * 2);
+		char *strA = malloc(sizeof(search_var) * 10);
 		strcat(strA, "/");
 		strcat(strA, search_var);
 
 		i = 0;
 		while (paths[i])
 		{
-			char *checkstr = strcat(paths[i], strA);
+			char *checkstr = strcat(strdup(paths[i]), strA);
+
 			if (check_file_access(checkstr) == 1)
 			{
 				free(strA);
 				return (checkstr);
 			}
-
+			free(checkstr);
 			i++;
 		}
 	}
@@ -180,7 +182,7 @@ int call_inbuilt_func(char **args, char **env)
 
 void change_dir(char **args, char **env)
 {
-
+	/* TODO - FIX EMPTY ARG TO CD */
 	if (args[2])
 	{
 		printf("bash : too many arguments\n");
@@ -190,7 +192,7 @@ void change_dir(char **args, char **env)
 	{
 		int a = chdir(args[1]);
 		if (a != 0)
-			printf("bash : not a directory");
+			printf("bash : not a directory\n");
 		return;
 	}
 	else
@@ -198,7 +200,7 @@ void change_dir(char **args, char **env)
 		char *home = _getenv("PWD", env);
 		int a = chdir(home);
 		if (a != 0)
-			printf("bash : not a directory");
+			printf("bash : not a directory\n");
 		return;
 	}
 }
