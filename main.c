@@ -4,7 +4,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-extern char **__environ;
 
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
@@ -12,6 +11,9 @@ int exec_cmd(char **args, char **env);
 char *_which(char *path, char **env);
 char *_getenv(char *search_path, char **env);
 int check_file_access(char *filepath);
+int call_inbuilt_func(char **args, char **env);
+void change_dir(char **args, char **env);
+void call_exit(char **args);
 
 int main(int argc, char **argv, char **env)
 {
@@ -60,8 +62,12 @@ char **split_lines(char *cmd, char *delimiters)
 	return (tokens);
 }
 
-int exec_cmd(char **args, char **env)
+int exec_cmd(char **args, char *env[])
 {
+	int a = call_inbuilt_func(args, env);
+
+	if (a == 1)
+		return (0);
 
 	pid_t ch_pid = fork();
 	char *location = NULL;
@@ -97,6 +103,8 @@ char *_which(char *search_var, char **env)
 
 	if (search_var[0] == '/')
 	{
+		if (check_file_access(search_var) != 1)
+			printf("%s: command not found\n", search_var);
 		return (search_var);
 	}
 	else
@@ -118,6 +126,7 @@ char *_which(char *search_var, char **env)
 				free(strA);
 				return (checkstr);
 			}
+
 			i++;
 		}
 	}
@@ -152,4 +161,53 @@ char *_getenv(char *search_path, char **env)
 	s = strtok(NULL, "=");
 
 	return (s);
+}
+
+int call_inbuilt_func(char **args, char **env)
+{
+	if (strcmp(args[0], "cd") == 0)
+	{
+		change_dir(args, env);
+		return (1);
+	}
+	if (strcmp(args[0], "exit") == 0)
+	{
+		call_exit(args);
+		return (1);
+	}
+	return (0);
+}
+
+void change_dir(char **args, char **env)
+{
+
+	if (args[2])
+	{
+		printf("bash : too many arguments\n");
+		return;
+	}
+	else if (args[1])
+	{
+		int a = chdir(args[1]);
+		if (a != 0)
+			printf("bash : not a directory");
+		return;
+	}
+	else
+	{
+		char *home = _getenv("PWD", env);
+		int a = chdir(home);
+		if (a != 0)
+			printf("bash : not a directory");
+		return;
+	}
+}
+
+void call_exit(char **args)
+{
+	if (!args[1])
+	{
+		exit(1);
+	}
+	return;
 }
