@@ -81,9 +81,10 @@ int exec_cmd(char **args, char *env[])
 	{
 		a = 0;
 		char **env_two = copyenv(environ);
-		char *location = _which(args[0], env);
+		char *location = _which(args[0], environ);
 
 		execve(location, args, env_two);
+		
 		exit(1);
 	}
 	else if (ch_pid > 0)
@@ -143,7 +144,7 @@ char *_which(char *search_var, char **env)
 		}
 	}
 	printf("%s: command not found\n", search_var);
-	free(env);
+
 	return (search_var);
 }
 
