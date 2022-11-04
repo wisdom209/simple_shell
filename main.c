@@ -5,6 +5,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+extern char **environ;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int exec_cmd(char **args, char **env);
@@ -14,6 +15,7 @@ int check_file_access(char *filepath);
 int call_inbuilt_func(char **args, char **env);
 void change_dir(char **args, char **env);
 void call_exit(char **args);
+char **copyenv(char **env);
 
 int main(int argc, char **argv, char **env)
 {
@@ -23,9 +25,11 @@ int main(int argc, char **argv, char **env)
 		char *cmd = read_cmd();
 		char **args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
+
 		free(args);
 		free(cmd);
 	}
+
 	return (0);
 }
 
@@ -36,7 +40,9 @@ char *read_cmd()
 	int result = getline(&buf, &i, stdin);
 
 	if (result < 0)
+	{
 		kill(getpid(), 2);
+	}
 
 	return (buf);
 }
@@ -70,13 +76,14 @@ int exec_cmd(char **args, char *env[])
 		return (0);
 
 	pid_t ch_pid = fork();
-	char *location = NULL;
 
 	if (ch_pid == 0)
 	{
-		location = _which(args[0], env);
-		execve(location, args, NULL);
-		free(location);
+		a = 0;
+		char **env_two = copyenv(environ);
+		char *location = _which(args[0], env);
+
+		execve(location, args, env_two);
 		exit(1);
 	}
 	else if (ch_pid > 0)
@@ -92,12 +99,13 @@ int exec_cmd(char **args, char *env[])
 		perror("bye\n");
 		exit(1);
 	}
-	free(location);
+
 	return (0);
 }
 
 char *_which(char *search_var, char **env)
 {
+
 	int i = 0, size = 0;
 	char *s;
 	char **paths;
@@ -125,14 +133,17 @@ char *_which(char *search_var, char **env)
 
 			if (check_file_access(checkstr) == 1)
 			{
+
 				free(strA);
 				return (checkstr);
 			}
+
 			free(checkstr);
 			i++;
 		}
 	}
 	printf("%s: command not found\n", search_var);
+	free(env);
 	return (search_var);
 }
 
@@ -212,4 +223,38 @@ void call_exit(char **args)
 		exit(1);
 	}
 	return;
+}
+
+char **copyenv(char **environ)
+{
+	int size = 0;
+	while (environ[size])
+	{
+		size++;
+	}
+
+	char **new_environ = malloc(sizeof(char) * size + 1);
+
+	if (!new_environ)
+	{
+		return (NULL);
+	}
+
+	int i = 0;
+	for (i = 0; i < size; i++)
+	{
+		new_environ[i] = malloc(sizeof(char) * strlen(environ[i]) + 1);
+		if (!new_environ[i])
+		{
+			for (int j = i - 1; i >= 0; i--)
+			{
+				free(new_environ[i]);
+			}
+			free(new_environ);
+		}
+		strcpy(new_environ[i], environ[i]);
+	}
+	new_environ[i] = NULL;
+
+	return (new_environ);
 }

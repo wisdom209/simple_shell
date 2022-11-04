@@ -3,7 +3,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+extern char **environ;
+
 char **split_lines(char *cmd, char *delimiters);
+char **copyenv(char **environ);
 
 int main(int argc, char **argv, char **env)
 {
@@ -12,29 +15,39 @@ int main(int argc, char **argv, char **env)
 	while (env[size])
 		size++;
 
-	while (env[i])
+	char **newenv = copyenv(env);
+
+	while (newenv[i])
 	{
-		s = strtok(env[i], "=");
-		if (strcmp("PATH", s) == 0)
-			break;
+		printf("%s\n", newenv[i]);
 		i++;
 	}
-	s = strtok(NULL, "=");
-
-	char **paths = split_lines(s, ":");
-	
-	i = 0;
-	while (paths[i])
-	{
-		char *s = strcat(paths[i], "/code");
-		if (access(s, F_OK) != -1 && access(s, X_OK) != -1)
+	/*
+		while (env[i])
 		{
-			printf("%s\n", paths[i]);
-			break;
-		}
 
-		i++;
-	}
+			s = strtok(env[i], "=");
+			if (strcmp("PATH", s) == 0)
+				break;
+			i++;
+		}
+		s = strtok(NULL, "=");
+
+		char **paths = split_lines(s, ":");
+
+		i = 0;
+		while (paths[i])
+		{
+
+			char *s = strcat(paths[i], "/code");
+			if (access(s, F_OK) != -1 && access(s, X_OK) != -1)
+			{
+				printf("%s\n", paths[i]);
+				break;
+			}
+
+			i++;
+		} */
 
 	return (0);
 }
@@ -58,4 +71,38 @@ char **split_lines(char *cmd, char *delimiters)
 	tokens[pos] = NULL;
 
 	return (tokens);
+}
+
+char **copyenv(char **environ)
+{
+	int size = 0;
+	while (environ[size])
+	{
+		size++;
+	}
+
+	char **new_environ = malloc(sizeof(char) * size + 1);
+
+	if (!new_environ)
+	{
+		return (NULL);
+	}
+
+	int i = 0;
+	for (i = 0; i < size; i++)
+	{
+		new_environ[i] = malloc(sizeof(char) * strlen(environ[i]) + 1);
+		if (!new_environ[i])
+		{
+			for (int j = i - 1; i >= 0; i--)
+			{
+				free(new_environ[i]);
+			}
+			free(new_environ);
+		}
+		strcpy(new_environ[i], environ[i]);
+	}
+	new_environ[i] = NULL;
+
+	return (new_environ);
 }
