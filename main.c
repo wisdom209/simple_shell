@@ -3,8 +3,10 @@
 #include <stdarg.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <strings.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <limits.h>
 
 extern char **environ;
 char *old_dir;
@@ -210,7 +212,7 @@ void change_dir(char **args, char **env)
 		printf("bash : too many arguments\n");
 		return;
 	}
-	else if (!args[1] || strcmp(args[1], "~") == 0)
+	else if (!args[1] || strcmp(args[1], "~") == 0 || strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
 	{
 		int a = chdir(home);
 		if (a != 0)
@@ -247,10 +249,47 @@ void change_dir(char **args, char **env)
 
 void call_exit(char **args)
 {
+	/* TODO - get the implementations of these funcs*/
 	if (!args[1])
 	{
-		exit(1);
+		exit(0);
 	}
+	if (args[2])
+	{
+		printf("bash: illegal number of arguments");
+	}
+
+	if (args[1])
+	{
+		if (strlen(args[1]) == 1 && args[1][0] == '0')
+		{
+			exit(0);
+		}
+		else if (args[1][0] == '-')
+		{
+			printf("bash : illegal argument");
+			return;
+		}
+		else
+		{
+
+			int a = atoi(args[1]);
+
+			if (a == 0)
+			{
+				printf("bash : illegal argument\n");
+				return;
+			}
+			if (a > INT_MAX)
+			{
+				printf("bash : illegal number");
+			}
+			exit(a % 256);
+		}
+
+		return;
+	}
+
 	return;
 }
 
