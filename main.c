@@ -1,11 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
 
 extern char **environ;
+char *old_dir;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int exec_cmd(char **args, char **env);
@@ -15,17 +17,20 @@ int check_file_access(char *filepath);
 int call_inbuilt_func(char **args, char **env);
 void change_dir(char **args, char **env);
 void call_exit(char **args);
+char *_getline();
 char **copyenv(char **env);
+int _printf(const char *format, ...);
+int _putchar(char c);
 
 int main(int argc, char **argv, char **env)
 {
+	
 	while (1)
 	{
-		printf("$ ");
+		write(STDIN_FILENO, "$ ", 3);
 		char *cmd = read_cmd();
 		char **args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
-
 		free(args);
 		free(cmd);
 	}
@@ -37,9 +42,9 @@ char *read_cmd()
 {
 	size_t i = 0;
 	char *buf = NULL;
-	int result = getline(&buf, &i, stdin);
+	buf = _getline();
 
-	if (result < 0)
+	if (buf == NULL)
 	{
 		kill(getpid(), 2);
 	}
@@ -49,7 +54,6 @@ char *read_cmd()
 
 char **split_lines(char *cmd, char *delimiters)
 {
-
 	char **tokens = malloc(sizeof(cmd) * 2 * 1024);
 	char *token = strtok(cmd, delimiters);
 	int pos = 0;
@@ -71,6 +75,8 @@ char **split_lines(char *cmd, char *delimiters)
 int exec_cmd(char **args, char *env[])
 {
 	int a = call_inbuilt_func(args, env);
+	char *location;
+	char **env_two;
 
 	if (a == 1)
 		return (0);
@@ -80,20 +86,18 @@ int exec_cmd(char **args, char *env[])
 	if (ch_pid == 0)
 	{
 		a = 0;
-		char **env_two = copyenv(environ);
-		char *location = _which(args[0], environ);
+		env_two = copyenv(environ);
+		location = _which(args[0], env_two);
 
-		execve(location, args, env_two);
+		execve(location, args, environ);
+
 		
-		exit(1);
+		exit(0);
 	}
 	else if (ch_pid > 0)
 	{
 		int status;
-		do
-		{
-			waitpid(ch_pid, &status, WUNTRACED);
-		} while (!WIFEXITED(status) && !WIFSIGNALED(status));
+		wait(&status);
 	}
 	else
 	{
@@ -106,15 +110,18 @@ int exec_cmd(char **args, char *env[])
 
 char *_which(char *search_var, char **env)
 {
-
 	int i = 0, size = 0;
 	char *s;
 	char **paths;
+	env = copyenv(env); 
 
 	if (search_var[0] == '/')
 	{
 		if (check_file_access(search_var) != 1)
+		{
 			printf("%s: command not found\n", search_var);
+			return (NULL);
+		}
 		return (search_var);
 	}
 	else
@@ -134,7 +141,6 @@ char *_which(char *search_var, char **env)
 
 			if (check_file_access(checkstr) == 1)
 			{
-
 				free(strA);
 				return (checkstr);
 			}
@@ -164,11 +170,11 @@ char *_getenv(char *search_path, char **env)
 
 	while (env[i])
 	{
-		s = strtok(env[i], "=");
+		char *a = strdup(env[i]);
+		s = strtok(a, "=");
 
 		if (strcmp(search_path, s) == 0)
 			break;
-
 		i++;
 	}
 	/* gets the other path of PATH searched */
@@ -258,4 +264,103 @@ char **copyenv(char **environ)
 	new_environ[i] = NULL;
 
 	return (new_environ);
+}
+
+char *_getline()
+{
+	int RL_BUFF_SIZE = 1024;
+	int buffsize = RL_BUFF_SIZE;
+	int position = 0;
+	char *buffer = malloc(sizeof(char) * buffsize);
+	char c;
+	int r;
+
+	if (!buffer)
+	{
+		return (NULL);
+	}
+
+	while (1)
+	{
+		r = read(0, &c, 1);
+		if (c == EOF || c == '\n' || r < 0)
+		{
+			buffer[position] = '\0';
+			return buffer;
+		}
+		else if (c == '\0')
+		{
+			return (NULL);
+		}
+		else
+		{
+			buffer[position] = c;
+		}
+		position++;
+
+		if (position >= buffsize)
+		{
+			buffsize += RL_BUFF_SIZE;
+			buffer = realloc(buffer, buffsize);
+
+			if (!buffer)
+			{
+				return (NULL);
+			}
+		}
+	}
+}
+int _printf(const char *format, ...)
+{
+	int i = 0, count = 0, ret = 0;
+	va_list ptr;
+
+	va_start(ptr, format);
+
+	while (format[i] != '\0')
+	{
+		if (format[i] != '%')
+		{
+			_putchar(format[i]);
+			count++;
+		}
+		else
+		{
+			if (format[i + 1] == 'c')
+			{
+				char c = va_arg(ptr, int);
+
+				if (c == 0)
+					return (-1);
+
+				_putchar(c);
+				count = count + 1;
+				i = i + 1;
+			}
+		}
+		if (format[i + 1] == 's')
+		{
+			char *s = va_arg(ptr, char *);
+			int j = 0;
+
+			if (s == NULL)
+				s = "(null)";
+
+			while (s[j] != '\0')
+			{
+				_putchar(s[j]);
+				count = count + 1;
+				j++;
+			}
+			i = i + 1;
+		}
+
+		i++;
+	}
+	return (count);
+}
+
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
 }
