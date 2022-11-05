@@ -69,10 +69,11 @@ int isDelim(char c, char *delim)
 	return (0);
 }
 
+/* TODO - fix potential malloc issues in this implementation */
 char **split_lines(char *newstr, char *delimiter)
 {
 	char *str = strdup(newstr);
-	strcat(str, " "); /* this line makes it work*/
+	strcat(str, delimiter); /* this line makes it work*/
 	/* and i have no idea why??? */
 	int str_size = strlen(str);
 	int buffsize = str_size * str_size;
@@ -87,7 +88,7 @@ char **split_lines(char *newstr, char *delimiter)
 			continue;
 		}
 
-			indexer++;
+		indexer++;
 		tokens[indexer] = malloc(sizeof(char) * str_size);
 		k = 0;
 		for (j = i; str[j] != '\0'; j++)
@@ -104,27 +105,7 @@ char **split_lines(char *newstr, char *delimiter)
 	}
 	return (tokens);
 }
-/*
-char **split_lines(char *cmd, char *delimiters)
-{
-	char **tokens = malloc(sizeof(cmd) * 2 * 1024);
-	char *token = strtok(cmd, delimiters);
-	int pos = 0;
 
-	if (!tokens)
-		exit(1);
-
-	while (token != NULL)
-	{
-		tokens[pos] = token;
-		pos++;
-		token = strtok(NULL, delimiters);
-	}
-	tokens[pos] = NULL;
-
-	return (tokens);
-}
-*/
 int exec_cmd(char **args, char *env[])
 {
 	int a = call_inbuilt_func(args, env);
@@ -220,18 +201,19 @@ char *_getenv(char *search_path, char **env)
 {
 	int i = 0, size = 0;
 	char *s = NULL;
+	char *a = NULL;
 
 	while (env[i])
 	{
-		char *a = strdup(env[i]);
-		s = strtok(a, "=");
+	    a = strdup(env[i]);
+		s = split_lines(a, "=")[0];
 
 		if (strcmp(search_path, s) == 0)
 			break;
 		i++;
 	}
 	/* gets the other path of PATH searched */
-	s = strtok(NULL, "=");
+	s = split_lines(a, "=")[1];
 
 	return (s);
 }
@@ -297,10 +279,7 @@ void change_dir(char **args, char **env)
 
 void call_exit(char **args)
 {
-	/* TODO - get the implementations of these funcs*/
-
-	for (int i = 0; environ[i]; i++)
-		printf("%s\n", environ[i]);
+	/* TODO - get the implementations of atoi*/
 
 	if (!args[1])
 	{
