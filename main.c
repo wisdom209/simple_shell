@@ -25,6 +25,7 @@ char *_getline();
 char **copyenv(char **env);
 int _printf(const char *format, ...);
 int _putchar(char c);
+int isDelim(char c, char *delim);
 
 int main(int argc, char **argv, char **env)
 {
@@ -57,6 +58,53 @@ char *read_cmd()
 	return (buf);
 }
 
+int isDelim(char c, char *delim)
+{
+	while (*delim != '\0')
+	{
+		if (c == *delim)
+			return (1);
+		delim++;
+	}
+	return (0);
+}
+
+char **split_lines(char *newstr, char *delimiter)
+{
+	char *str = strdup(newstr);
+	strcat(str, " "); /* this line makes it work*/
+	/* and i have no idea why??? */
+	int str_size = strlen(str);
+	int buffsize = str_size * str_size;
+	char **tokens = malloc(sizeof(char) * buffsize);
+	int indexer = -1;
+
+	int i, j = 0, k = 0;
+	for (i = 0; str[i] != '\0'; i++)
+	{
+		if (isDelim(str[i], delimiter))
+		{
+			continue;
+		}
+
+			indexer++;
+		tokens[indexer] = malloc(sizeof(char) * str_size);
+		k = 0;
+		for (j = i; str[j] != '\0'; j++)
+		{
+			if (isDelim(str[j], delimiter))
+			{
+				i = j - 1;
+				break;
+			}
+
+			tokens[indexer][k] = str[j];
+			k++;
+		}
+	}
+	return (tokens);
+}
+/*
 char **split_lines(char *cmd, char *delimiters)
 {
 	char **tokens = malloc(sizeof(cmd) * 2 * 1024);
@@ -76,7 +124,7 @@ char **split_lines(char *cmd, char *delimiters)
 
 	return (tokens);
 }
-
+*/
 int exec_cmd(char **args, char *env[])
 {
 	int a = call_inbuilt_func(args, env);
@@ -250,6 +298,10 @@ void change_dir(char **args, char **env)
 void call_exit(char **args)
 {
 	/* TODO - get the implementations of these funcs*/
+
+	for (int i = 0; environ[i]; i++)
+		printf("%s\n", environ[i]);
+
 	if (!args[1])
 	{
 		exit(0);
@@ -267,7 +319,7 @@ void call_exit(char **args)
 		}
 		else if (args[1][0] == '-')
 		{
-			printf("bash : illegal argument");
+			printf("bash : illegal number\n");
 			return;
 		}
 		else
@@ -277,12 +329,13 @@ void call_exit(char **args)
 
 			if (a == 0)
 			{
-				printf("bash : illegal argument\n");
+				printf("bash : illegal number\n");
 				return;
 			}
-			if (a > INT_MAX)
+			if (a > INT_MAX || strlen(args[1]) > 10)
 			{
-				printf("bash : illegal number");
+				printf("bash : illegal number\n");
+				return;
 			}
 			exit(a % 256);
 		}
