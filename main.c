@@ -8,6 +8,8 @@
 
 extern char **environ;
 char *old_dir;
+char *curr_dir;
+char *home;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int exec_cmd(char **args, char **env);
@@ -24,7 +26,8 @@ int _putchar(char c);
 
 int main(int argc, char **argv, char **env)
 {
-	
+	home = _getenv("HOME", env);
+
 	while (1)
 	{
 		write(STDIN_FILENO, "$ ", 3);
@@ -91,7 +94,6 @@ int exec_cmd(char **args, char *env[])
 
 		execve(location, args, environ);
 
-		
 		exit(0);
 	}
 	else if (ch_pid > 0)
@@ -108,12 +110,13 @@ int exec_cmd(char **args, char *env[])
 	return (0);
 }
 
+/* TODO - incorrect commands more than two letters gives malloc error */
 char *_which(char *search_var, char **env)
 {
 	int i = 0, size = 0;
 	char *s;
 	char **paths;
-	env = copyenv(env); 
+	env = copyenv(env);
 
 	if (search_var[0] == '/')
 	{
@@ -151,7 +154,7 @@ char *_which(char *search_var, char **env)
 	}
 	printf("%s: command not found\n", search_var);
 
-	return (search_var);
+	return (NULL);
 }
 
 int check_file_access(char *filepath)
@@ -201,24 +204,43 @@ int call_inbuilt_func(char **args, char **env)
 void change_dir(char **args, char **env)
 {
 	/* TODO - FIX EMPTY ARG TO CD */
+	curr_dir = getcwd(NULL, 0);
 	if (args[2])
 	{
 		printf("bash : too many arguments\n");
+		return;
+	}
+	else if (!args[1] || strcmp(args[1], "~") == 0)
+	{
+		int a = chdir(home);
+		if (a != 0)
+		{
+			printf("bash : not a directory\n");
+			return;
+		}
+		old_dir = curr_dir;
+		return;
+	}
+	else if (args[1] && strcmp(args[1], "-") == 0)
+	{
+		int a = chdir(old_dir);
+		if (a != 0)
+		{
+			printf("bash : not a directory\n");
+			return;
+		}
+		old_dir = curr_dir;
 		return;
 	}
 	else if (args[1])
 	{
 		int a = chdir(args[1]);
 		if (a != 0)
+		{
 			printf("bash : not a directory\n");
-		return;
-	}
-	else
-	{
-		char *home = _getenv("PWD", env);
-		int a = chdir(home);
-		if (a != 0)
-			printf("bash : not a directory\n");
+			return;
+		}
+		old_dir = curr_dir;
 		return;
 	}
 }
@@ -240,7 +262,7 @@ char **copyenv(char **environ)
 		size++;
 	}
 
-	char **new_environ = malloc(sizeof(char) * size + 1);
+	char **new_environ = malloc(sizeof(char) * size * 1024);
 
 	if (!new_environ)
 	{
@@ -310,6 +332,7 @@ char *_getline()
 		}
 	}
 }
+
 int _printf(const char *format, ...)
 {
 	int i = 0, count = 0, ret = 0;
