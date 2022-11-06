@@ -26,6 +26,8 @@ char **copyenv(char **env);
 int _printf(const char *format, ...);
 int _putchar(char c);
 int isDelim(char c, char *delim);
+int _setenv(char *env_name, char *env_value, int overwrite);
+int _unsetenv(char *env_name);
 
 int main(int argc, char **argv, char **env)
 {
@@ -72,6 +74,8 @@ int isDelim(char c, char *delim)
 /* TODO - fix potential malloc issues in this implementation */
 char **split_lines(char *newstr, char *delimiter)
 {
+	if (newstr == NULL)
+		return (NULL);
 	char *str = strdup(newstr);
 	strcat(str, delimiter); /* this line makes it work*/
 	/* and i have no idea why??? */
@@ -202,18 +206,28 @@ char *_getenv(char *search_path, char **env)
 	int i = 0, size = 0;
 	char *s = NULL;
 	char *a = NULL;
+	int found = 0;
+	if (search_path == NULL)
+		return (NULL);
 
 	while (env[i])
 	{
-	    a = strdup(env[i]);
+		a = strdup(env[i]);
 		s = split_lines(a, "=")[0];
 
 		if (strcmp(search_path, s) == 0)
+		{
+			found = 1;
 			break;
+		}
 		i++;
 	}
+
 	/* gets the other path of PATH searched */
-	s = split_lines(a, "=")[1];
+	if (found == 1)
+		s = split_lines(a, "=")[1];
+	else
+		s = NULL;
 
 	return (s);
 }
@@ -233,6 +247,7 @@ int call_inbuilt_func(char **args, char **env)
 	return (0);
 }
 
+/* TODO - setenv pwd after path change */
 void change_dir(char **args, char **env)
 {
 	/* TODO - FIX EMPTY ARG TO CD */
@@ -457,4 +472,73 @@ int _printf(const char *format, ...)
 int _putchar(char c)
 {
 	return (write(1, &c, 1));
+}
+
+/* implement set env - malloc issues yet to */
+/* implement set env - malloc issues yet to */
+int _setenv(char *env_name, char *env_value, int overwrite)
+{
+	int i = 0, size = 0, highest = 0;
+
+	if (env_name == NULL || env_value == NULL)
+		return (-1);
+
+	if (overwrite == 0 && _getenv(env_name, environ))
+		return (0);
+
+	char *path_to_add = strdup(env_name);
+	strcat(path_to_add, "=");
+	strcat(path_to_add, env_value);
+	
+	char * new_env_add =  malloc(sizeof(char) * strlen(path_to_add));
+	
+	putenv(path_to_add);
+
+	return (0);
+}
+
+/* unset env... does not use malloc, should not need to be freed */
+int _unsetenv(char *env_name)
+{
+	int i = 0, size = 0, location = 0, loc_size = 0;
+
+	if (env_name == NULL)
+		return (-1);
+
+	if (!_getenv(env_name, environ))
+		return (0);
+
+	while (env_name[i])
+	{
+		if (env_name[i] == '=')
+		{
+			return (-1);
+		}
+		i++;
+	}
+
+	size = 0;
+	while (environ[size])
+		size++;
+
+	for (i = 0; i < size; i++)
+	{
+		char *a = split_lines(environ[i], "=")[0];
+		if (strcmp(a, env_name) == 0)
+		{
+			location = i;
+			break;
+		}
+	}
+
+	for (i = location; i < size; i++)
+	{
+		if (environ[i + 1] == NULL)
+		{
+			environ[i] = NULL;
+			break;
+		}
+		environ[i] = environ[i + 1];
+	}
+	return (0);
 }
