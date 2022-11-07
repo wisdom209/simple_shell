@@ -43,7 +43,7 @@ char **split_lines(char *newstr, char *delimiter)
 {
 	char *str;
 	char **tokens;
-	int token_size, t_index,strsize, indexer = -1, i = 0, j = 0, k = 0;
+	int token_size, t_index, strsize, indexer = -1, i = 0, j = 0, k = 0;
 
 	token_size = 0;
 	t_index = 0;
@@ -52,7 +52,7 @@ char **split_lines(char *newstr, char *delimiter)
 		return (NULL);
 
 	str = malloc(sizeof(char) * strlen(newstr) + 2);
-	if(str == NULL)
+	if (str == NULL)
 		return NULL;
 	strcpy(str, "");
 	strcat(str, newstr);
@@ -67,9 +67,9 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 		t_index++;
 	}
-	
-	tokens = malloc(sizeof(char) * token_size);
-	if(tokens == NULL)
+
+	tokens = malloc(sizeof(char*) * token_size);
+	if (tokens == NULL)
 		return NULL;
 
 	indexer = -1;
@@ -85,7 +85,7 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 
 		indexer++;
-		tokens[indexer] = malloc(sizeof(char) * strsize);
+		tokens[indexer] = calloc(1, sizeof(char) * strsize);
 		k = 0;
 		for (j = i; str[j] != '\0'; j++)
 		{
@@ -101,9 +101,8 @@ char **split_lines(char *newstr, char *delimiter)
 	}
 	tokens[indexer + 1] = NULL;
 
-	
-	free(str);
-	/*free(newstr); */
+	/* free(str);
+	free(newstr); */
 	return (tokens);
 }
 /**
