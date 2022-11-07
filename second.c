@@ -1,4 +1,10 @@
 #include "main.h"
+/**
+ * _which - searches for command in env
+ * @search_var: parameter
+ * @env: env
+ * Return: path string
+ */
 char *_which(char *search_var, char **env)
 {
 	int i = 0, size = 0;
@@ -45,7 +51,11 @@ char *_which(char *search_var, char **env)
 
 	return (NULL);
 }
-
+/**
+ * check_file_access - what it says
+ * @filepath: parameter
+ * Return: 1 on success
+ */
 int check_file_access(char *filepath)
 {
 	if (access(filepath, F_OK) != -1 && access(filepath, X_OK) != -1)
@@ -54,6 +64,12 @@ int check_file_access(char *filepath)
 	}
 	return (0);
 }
+/**
+ * call_inbuilt_func - what it says
+ * @args: parameter
+ * @env: env
+ * Return: 1 on success
+ */
 int call_inbuilt_func(char **args, char **env)
 {
 	if (strcmp(args[0], "cd") == 0)
