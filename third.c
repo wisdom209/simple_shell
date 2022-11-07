@@ -1,4 +1,9 @@
 #include "main.h"
+/**
+ * change_dir - change directory
+ * @args: parameter
+ * @env: env
+ */
 void change_dir(char **args, char **env)
 {
 	/* TODO - FIX EMPTY ARG TO CD */
@@ -43,6 +48,10 @@ void change_dir(char **args, char **env)
 	}
 }
 
+/**
+ * call_exit - exit
+ * @args: parameter
+ */
 void call_exit(char **args)
 {
 	/* TODO - get the implementations of atoi*/
@@ -90,7 +99,11 @@ void call_exit(char **args)
 
 	return;
 }
-char *_getline()
+/**
+ * _getline - reads line from STDIN
+ * Return: string
+ */
+char *_getline(void)
 {
 	int RL_BUFF_SIZE = 1024;
 	int buffsize = RL_BUFF_SIZE;
