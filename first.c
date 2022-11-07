@@ -1,4 +1,8 @@
 #include "main.h"
+/**
+ * read_cmd - reads valid output from getline
+ * Return: string
+ */
 char *read_cmd()
 {
 	size_t i = 0;
@@ -12,7 +16,12 @@ char *read_cmd()
 
 	return (buf);
 }
-
+/**
+ * isDelim - delimiters
+ * @c: parameter
+ * @delim: parameter
+ * Return: 1 if true
+ */
 int isDelim(char c, char *delim)
 {
 	while (*delim != '\0')
@@ -25,6 +34,12 @@ int isDelim(char c, char *delim)
 }
 
 /* TODO - fix potential malloc issues in this implementation */
+/**
+ * split_lines - split by delimiters
+ * @newstr: parameter
+ * @delimiters: parameter
+ * Return: array of strings
+ */
 char **split_lines(char *newstr, char *delimiter)
 {
 	if (newstr == NULL)
@@ -75,7 +90,12 @@ char **split_lines(char *newstr, char *delimiter)
 	free(newstr); */
 	return (tokens);
 }
-
+/**
+ * exec_cmd - execute commands
+ * @args: parameter
+ * @env: env
+ * Return: 0 on success
+ */
 int exec_cmd(char **args, char *env[])
 {
 	int a = call_inbuilt_func(args, env);
