@@ -40,8 +40,8 @@ int main(int argc, char **argv, char **env)
 		char *cmd = read_cmd();
 		char **args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
-		/* free(args); */
-		/* free(cmd); */
+		free(args);
+		free(cmd);
 	}
 
 	return (0);
@@ -268,6 +268,36 @@ int call_inbuilt_func(char **args, char **env)
 	if (strcmp(args[0], "exit") == 0)
 	{
 		call_exit(args);
+		return (1);
+	}
+	if (strcmp(args[0], "setenv") == 0)
+	{
+		if (args[3])
+		{
+			printf("invalid number of args\n");
+			return (1);
+		}
+
+		if (args[1] && args[2])
+			_setenv(args[1], args[2], 0);
+		else
+			printf("invalid input\n");
+
+		return (1);
+	}
+	if (strcmp(args[0], "unsetenv") == 0)
+	{
+		if (args[2])
+		{
+			printf("invalid number of args\n");
+			return (1);
+		}
+
+		if (args[1] )
+			_unsetenv(args[1]);
+		else
+			printf("invalid input\n");
+
 		return (1);
 	}
 	return (0);
