@@ -16,13 +16,13 @@ char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int exec_cmd(char **args, char **env);
 char *_which(char *path, char **env);
-char *_getenv(char *search_path, char **env);
+/* char *_getenv(char *search_path, char **env); */
 int check_file_access(char *filepath);
 int call_inbuilt_func(char **args, char **env);
 void change_dir(char **args, char **env);
 void call_exit(char **args);
 char *_getline();
-char **copyenv(char **env);
+/* char **copyenv(char **env); */
 int _printf(const char *format, ...);
 int _putchar(char c);
 int isDelim(char c, char *delim);
@@ -31,7 +31,8 @@ int _unsetenv(char *env_name);
 
 int main(int argc, char **argv, char **env)
 {
-	home = _getenv("HOME", env);
+	/* home = getenv("HOME", env); */
+	home = getenv("HOME");
 
 	while (1)
 	{
@@ -39,8 +40,8 @@ int main(int argc, char **argv, char **env)
 		char *cmd = read_cmd();
 		char **args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
-		free(args);
-		free(cmd);
+		/* free(args); */
+		/* free(cmd); */
 	}
 
 	return (0);
@@ -81,7 +82,17 @@ char **split_lines(char *newstr, char *delimiter)
 	/* and i have no idea why??? */
 	int str_size = strlen(str);
 	int buffsize = str_size * str_size;
-	char **tokens = malloc(sizeof(char) * buffsize);
+	int token_size = 0;
+	int t_index = 0;
+	while (str[t_index] != '\0')
+	{
+		if (isDelim(str[token_size], delimiter))
+		{
+			token_size++;
+		}
+		t_index++;
+	}
+	char **tokens = malloc(sizeof(char) * token_size);
 	int indexer = -1;
 
 	int i, j = 0, k = 0;
@@ -107,6 +118,9 @@ char **split_lines(char *newstr, char *delimiter)
 			k++;
 		}
 	}
+	tokens[indexer + 1] = NULL;
+	/* free(str);
+	free(newstr); */
 	return (tokens);
 }
 
@@ -124,8 +138,8 @@ int exec_cmd(char **args, char *env[])
 	if (ch_pid == 0)
 	{
 		a = 0;
-		env_two = copyenv(environ);
-		location = _which(args[0], env_two);
+		/* env_two = copyenv(environ); */
+		location = _which(args[0], environ);
 
 		execve(location, args, environ);
 
@@ -151,7 +165,7 @@ char *_which(char *search_var, char **env)
 	int i = 0, size = 0;
 	char *s;
 	char **paths;
-	env = copyenv(env);
+	/* env = copyenv(env); */
 
 	if (search_var[0] == '/')
 	{
@@ -164,7 +178,8 @@ char *_which(char *search_var, char **env)
 	}
 	else
 	{
-		s = _getenv("PATH", env);
+		/* s = getenv("PATH", env); */
+		s = getenv("PATH");
 
 		paths = split_lines(s, ":");
 
@@ -179,11 +194,11 @@ char *_which(char *search_var, char **env)
 
 			if (check_file_access(checkstr) == 1)
 			{
-				free(strA);
+				/* free(strA); */
 				return (checkstr);
 			}
 
-			free(checkstr);
+			/* free(checkstr); */
 			i++;
 		}
 	}
@@ -200,7 +215,7 @@ int check_file_access(char *filepath)
 	}
 	return (0);
 }
-
+/*
 char *_getenv(char *search_path, char **env)
 {
 	int i = 0, size = 0;
@@ -213,25 +228,36 @@ char *_getenv(char *search_path, char **env)
 	while (env[i])
 	{
 		a = strdup(env[i]);
-		s = split_lines(a, "=")[0];
+		char **stri = split_lines(a, "=");
+		s = stri[0];
 
 		if (strcmp(search_path, s) == 0)
 		{
 			found = 1;
 			break;
 		}
+		free(stri[0]);
+		free(stri[1]);
+		free(stri);
 		i++;
 	}
 
-	/* gets the other path of PATH searched */
+
 	if (found == 1)
-		s = split_lines(a, "=")[1];
+	{
+		char **str = split_lines(a, "=");
+		s = str[1];
+		free(str[0]);
+		free(str[1]);
+		free(str);
+	}
 	else
 		s = NULL;
+	free(a);
 
 	return (s);
 }
-
+*/
 int call_inbuilt_func(char **args, char **env)
 {
 	if (strcmp(args[0], "cd") == 0)
@@ -340,7 +366,7 @@ void call_exit(char **args)
 	return;
 }
 
-char **copyenv(char **environ)
+/* char **copyenv(char **environ)
 {
 	int size = 0;
 	while (environ[size])
@@ -373,7 +399,7 @@ char **copyenv(char **environ)
 
 	return (new_environ);
 }
-
+ */
 char *_getline()
 {
 	int RL_BUFF_SIZE = 1024;
@@ -483,15 +509,17 @@ int _setenv(char *env_name, char *env_value, int overwrite)
 	if (env_name == NULL || env_value == NULL)
 		return (-1);
 
-	if (overwrite == 0 && _getenv(env_name, environ))
+	/* if (overwrite == 0 && getenv(env_name, environ))
+		return (0); */
+	if (overwrite == 0 && getenv(env_name))
 		return (0);
 
 	char *path_to_add = strdup(env_name);
 	strcat(path_to_add, "=");
 	strcat(path_to_add, env_value);
-	
-	char * new_env_add =  malloc(sizeof(char) * strlen(path_to_add));
-	
+
+	char *new_env_add = malloc(sizeof(char) * strlen(path_to_add));
+
 	putenv(path_to_add);
 
 	return (0);
@@ -504,8 +532,11 @@ int _unsetenv(char *env_name)
 
 	if (env_name == NULL)
 		return (-1);
+	/*
+		if (!getenv(env_name, environ))
+			return (0); */
 
-	if (!_getenv(env_name, environ))
+	if (!getenv(env_name))
 		return (0);
 
 	while (env_name[i])

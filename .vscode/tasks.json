@@ -7,9 +7,9 @@
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",
-                "${fileBasename}",
+                "*.c",
                 "-o",
-                "${fileDirname}"
+                "main"
             ],
             "options": {
                 "cwd": "${fileDirname}"
