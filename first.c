@@ -71,7 +71,7 @@ char **split_lines(char *newstr, char *delimiter)
 	tokens = malloc(sizeof(char) * token_size);
 	if(tokens == NULL)
 		return NULL;
-		
+
 	indexer = -1;
 
 	i = 0;
@@ -102,8 +102,8 @@ char **split_lines(char *newstr, char *delimiter)
 	tokens[indexer + 1] = NULL;
 
 	
-	/* free(str);
-	free(newstr); */
+	free(str);
+	/*free(newstr); */
 	return (tokens);
 }
 /**
