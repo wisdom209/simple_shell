@@ -1,6 +1,13 @@
 #include "main.h"
 /* implement set env - malloc issues yet to */
 /* implement set env - malloc issues yet to */
+/**
+ * _setenv - set environment
+ * @env_name: parameter
+ * @env_value: parameter
+ * @overwrite: parameter
+ * Return: 0/-1
+ */
 int _setenv(char *env_name, char *env_value, int overwrite)
 {
 	int i = 0, size = 0, highest = 0;
@@ -14,6 +21,7 @@ int _setenv(char *env_name, char *env_value, int overwrite)
 		return (0);
 
 	char *path_to_add = strdup(env_name);
+
 	strcat(path_to_add, "=");
 	strcat(path_to_add, env_value);
 
@@ -25,6 +33,11 @@ int _setenv(char *env_name, char *env_value, int overwrite)
 }
 
 /* unset env... does not use malloc, should not need to be freed */
+/**
+ * _unsetenv - set environment
+ * @env_name: parameter
+ * Return: 0/-1
+ */
 int _unsetenv(char *env_name)
 {
 	int i = 0, size = 0, location = 0, loc_size = 0;
@@ -54,6 +67,7 @@ int _unsetenv(char *env_name)
 	for (i = 0; i < size; i++)
 	{
 		char *a = split_lines(environ[i], "=")[0];
+
 		if (strcmp(a, env_name) == 0)
 		{
 			location = i;

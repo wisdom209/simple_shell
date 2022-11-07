@@ -1,4 +1,9 @@
 #include "main.h"
+/**
+ * _printf - mini printf
+ * @format: parameter
+ * Return: count
+ */
 int _printf(const char *format, ...)
 {
 	int i = 0, count = 0, ret = 0;
@@ -49,3 +54,12 @@ int _printf(const char *format, ...)
 	return (count);
 }
 
+/**
+ * _putchar - write to STDOUT
+ * @c: parameter
+ * Return: int
+ */
+int _putchar(char c)
+{
+	return (write(1, &c, 1));
+}
