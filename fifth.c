@@ -10,7 +10,7 @@
  */
 int _setenv(char *env_name, char *env_value, int overwrite)
 {
-	char *path_to_add = strdup(env_name);
+	char *path_to_add = env_name;
 
 	if (env_name == NULL || env_value == NULL)
 		return (-1);

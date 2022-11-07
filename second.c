@@ -5,7 +5,7 @@
  * @env: env
  * Return: path string
  */
-char *_which(char *search_var, char **env  __attribute_maybe_unused__)
+char *_which(char *search_var, char **env __attribute_maybe_unused__)
 {
 	int i = 0;
 	char *s;
@@ -30,6 +30,8 @@ char *_which(char *search_var, char **env  __attribute_maybe_unused__)
 		paths = split_lines(s, ":");
 
 		strA = malloc(sizeof(search_var) * 10);
+		if (strA == NULL)
+			return NULL;
 		strcpy(strA, "");
 		strcat(strA, "/");
 		strcat(strA, search_var);
@@ -37,7 +39,12 @@ char *_which(char *search_var, char **env  __attribute_maybe_unused__)
 		i = 0;
 		while (paths[i])
 		{
-			char *checkstr = strcat(strdup(paths[i]), strA);
+			char *checkstr = malloc(1024);
+			if (checkstr == NULL)
+				return NULL;
+			strcpy(checkstr, "");
+			strcat(checkstr, paths[i]);
+			strcat(checkstr, strA);
 
 			if (check_file_access(checkstr) == 1)
 			{
@@ -107,7 +114,7 @@ int call_inbuilt_func(char **args, char **env)
 			return (1);
 		}
 
-		if (args[1] )
+		if (args[1])
 			_unsetenv(args[1]);
 		else
 			printf("invalid input\n");

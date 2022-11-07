@@ -52,6 +52,8 @@ char **split_lines(char *newstr, char *delimiter)
 		return (NULL);
 
 	str = malloc(sizeof(char) * strlen(newstr) + 2);
+	if(str == NULL)
+		return NULL;
 	strcpy(str, "");
 	strcat(str, newstr);
 	strcat(str, delimiter); /* this line makes it work*/
@@ -65,7 +67,11 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 		t_index++;
 	}
+	
 	tokens = malloc(sizeof(char) * token_size);
+	if(tokens == NULL)
+		return NULL;
+		
 	indexer = -1;
 
 	i = 0;
