@@ -51,7 +51,9 @@ char **split_lines(char *newstr, char *delimiter)
 	if (newstr == NULL)
 		return (NULL);
 
-	str = strdup(newstr);
+	str = malloc(sizeof(char) * strlen(newstr) + 2);
+	strcpy(str, "");
+	strcat(str, newstr);
 	strcat(str, delimiter); /* this line makes it work*/
 	/* and i have no idea why??? */
 	strsize = strlen(str);
@@ -92,6 +94,8 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 	}
 	tokens[indexer + 1] = NULL;
+
+	
 	/* free(str);
 	free(newstr); */
 	return (tokens);
