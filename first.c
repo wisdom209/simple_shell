@@ -1,3 +1,4 @@
+#include "main.h"
 char *read_cmd()
 {
 	size_t i = 0;
