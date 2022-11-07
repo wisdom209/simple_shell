@@ -20,7 +20,7 @@ int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unus
 	while (1)
 	{
 		home = getenv("HOME");
-		write(STDIN_FILENO, "$ ", 3);
+		write(STDOUT_FILENO, "$ ", 3);
 		cmd = read_cmd();
 		args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
