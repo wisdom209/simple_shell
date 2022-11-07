@@ -4,7 +4,7 @@
  * @args: parameter
  * @env: env
  */
-void change_dir(char **args, char **env)
+void change_dir(char **args, char **env __attribute_maybe_unused__)
 {
 	/* TODO - FIX EMPTY ARG TO CD */
 	curr_dir = getcwd(NULL, 0);

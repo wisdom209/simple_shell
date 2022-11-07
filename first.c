@@ -5,7 +5,6 @@
  */
 char *read_cmd()
 {
-	size_t i = 0;
 	char *buf = NULL;
 	buf = _getline();
 
@@ -42,15 +41,20 @@ int isDelim(char c, char *delim)
  */
 char **split_lines(char *newstr, char *delimiter)
 {
+	char *str;
+	char **tokens;
+	int token_size, t_index,strsize, indexer = -1, i = 0, j = 0, k = 0;
+
+	token_size = 0;
+	t_index = 0;
+
 	if (newstr == NULL)
 		return (NULL);
-	char *str = strdup(newstr);
+
+	str = strdup(newstr);
 	strcat(str, delimiter); /* this line makes it work*/
 	/* and i have no idea why??? */
-	int str_size = strlen(str);
-	int buffsize = str_size * str_size;
-	int token_size = 0;
-	int t_index = 0;
+	strsize = strlen(str);
 	while (str[t_index] != '\0')
 	{
 		if (isDelim(str[token_size], delimiter))
@@ -59,10 +63,12 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 		t_index++;
 	}
-	char **tokens = malloc(sizeof(char) * token_size);
-	int indexer = -1;
+	tokens = malloc(sizeof(char) * token_size);
+	indexer = -1;
 
-	int i, j = 0, k = 0;
+	i = 0;
+	j = 0;
+	k = 0;
 	for (i = 0; str[i] != '\0'; i++)
 	{
 		if (isDelim(str[i], delimiter))
@@ -71,7 +77,7 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 
 		indexer++;
-		tokens[indexer] = malloc(sizeof(char) * str_size);
+		tokens[indexer] = malloc(sizeof(char) * strsize);
 		k = 0;
 		for (j = i; str[j] != '\0'; j++)
 		{
@@ -100,12 +106,12 @@ int exec_cmd(char **args, char *env[])
 {
 	int a = call_inbuilt_func(args, env);
 	char *location;
-	char **env_two;
+	pid_t ch_pid;
 
 	if (a == 1)
 		return (0);
 
-	pid_t ch_pid = fork();
+	ch_pid = fork();
 
 	if (ch_pid == 0)
 	{

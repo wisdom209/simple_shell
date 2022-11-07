@@ -11,9 +11,9 @@
 #include <limits.h>
 
 extern char **environ;
-char *old_dir;
-char *curr_dir;
-char *home;
+extern char *old_dir;
+extern char *curr_dir;
+extern char *home;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int exec_cmd(char **args, char **env);

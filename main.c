@@ -1,4 +1,8 @@
 #include "main.h"
+
+char *old_dir;
+char *curr_dir;
+char *home;
 /**
  * main - main function
  * @argc: argument count
@@ -6,16 +10,19 @@
  * @env: environment variables
  * Return: 0 on success
  */
-int main(int argc, char **argv, char **env)
+int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unused__, char **env __attribute_maybe_unused__)
 {
 	/* home = getenv("HOME", env); */
-	home = getenv("HOME");
+
+	char *cmd;
+	char **args;
 
 	while (1)
 	{
+		home = getenv("HOME");
 		write(STDIN_FILENO, "$ ", 3);
-		char *cmd = read_cmd();
-		char **args = split_lines(cmd, " \t\r\n");
+		cmd = read_cmd();
+		args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
 		free(args);
 		free(cmd);
@@ -69,7 +76,6 @@ char *_getenv(char *search_path, char **env)
 }
 */
 
-
 /* char **copyenv(char **environ)
 {
 	int size = 0;
@@ -104,4 +110,3 @@ char *_getenv(char *search_path, char **env)
 	return (new_environ);
 }
  */
-

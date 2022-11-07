@@ -5,11 +5,12 @@
  * @env: env
  * Return: path string
  */
-char *_which(char *search_var, char **env)
+char *_which(char *search_var, char **env  __attribute_maybe_unused__)
 {
-	int i = 0, size = 0;
+	int i = 0;
 	char *s;
 	char **paths;
+	char *strA;
 	/* env = copyenv(env); */
 
 	if (search_var[0] == '/')
@@ -28,7 +29,7 @@ char *_which(char *search_var, char **env)
 
 		paths = split_lines(s, ":");
 
-		char *strA = malloc(sizeof(search_var) * 10);
+		strA = malloc(sizeof(search_var) * 10);
 		strcat(strA, "/");
 		strcat(strA, search_var);
 

@@ -10,7 +10,7 @@
  */
 int _setenv(char *env_name, char *env_value, int overwrite)
 {
-	int i = 0, size = 0, highest = 0;
+	char *path_to_add = strdup(env_name);
 
 	if (env_name == NULL || env_value == NULL)
 		return (-1);
@@ -19,13 +19,12 @@ int _setenv(char *env_name, char *env_value, int overwrite)
 		return (0); */
 	if (overwrite == 0 && getenv(env_name))
 		return (0);
-
-	char *path_to_add = strdup(env_name);
+	
 
 	strcat(path_to_add, "=");
 	strcat(path_to_add, env_value);
 
-	char *new_env_add = malloc(sizeof(char) * strlen(path_to_add));
+	
 
 	putenv(path_to_add);
 
@@ -40,7 +39,7 @@ int _setenv(char *env_name, char *env_value, int overwrite)
  */
 int _unsetenv(char *env_name)
 {
-	int i = 0, size = 0, location = 0, loc_size = 0;
+	int i = 0, size = 0, location = 0;
 
 	if (env_name == NULL)
 		return (-1);
