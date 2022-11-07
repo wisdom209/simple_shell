@@ -1,4 +1,11 @@
 #include "main.h"
+/**
+ * main - main function
+ * @argc: argument count
+ * @argv: array of argument strings
+ * @env: environment variables
+ * Return: 0 on success
+ */
 int main(int argc, char **argv, char **env)
 {
 	/* home = getenv("HOME", env); */
