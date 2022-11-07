@@ -10,7 +10,8 @@ char *read_cmd()
 
 	if (buf == NULL)
 	{
-		kill(getpid(), 2);
+		exit(0);
+
 	}
 
 	return (buf);

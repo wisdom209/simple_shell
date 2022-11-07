@@ -24,8 +24,8 @@ char *_which(char *search_var, char **env __attribute_maybe_unused__)
 	}
 	else
 	{
-		/* s = getenv("PATH", env); */
-		s = getenv("PATH");
+		/* s = _getenv("PATH", env); */
+		s = _getenv("PATH");
 
 		paths = split_lines(s, ":");
 
@@ -81,6 +81,8 @@ int check_file_access(char *filepath)
  */
 int call_inbuilt_func(char **args, char **env)
 {
+	if(args[0] == NULL)
+		return (1);
 	if (strcmp(args[0], "cd") == 0)
 	{
 		change_dir(args, env);

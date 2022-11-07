@@ -18,7 +18,7 @@ char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int exec_cmd(char **args, char **env);
 char *_which(char *path, char **env);
-/* char *_getenv(char *search_path, char **env); */
+char *_getenv(char *search_path);
 int check_file_access(char *filepath);
 int call_inbuilt_func(char **args, char **env);
 void change_dir(char **args, char **env);

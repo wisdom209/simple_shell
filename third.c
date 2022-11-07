@@ -105,7 +105,7 @@ void call_exit(char **args)
  */
 char *_getline(void)
 {
-	int RL_BUFF_SIZE = 1024;
+	int RL_BUFF_SIZE = 14096;
 	int buffsize = RL_BUFF_SIZE;
 	int position = 0;
 	char *buffer = malloc(sizeof(char) * buffsize);

@@ -12,16 +12,17 @@ char *home;
  */
 int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unused__, char **env __attribute_maybe_unused__)
 {
-	/* home = getenv("HOME", env); */
+	/* home = _getenv("HOME", env); */
 
 	char *cmd;
 	char **args;
-
+	home = _getenv("HOME");
 	while (1)
 	{
-		home = getenv("HOME");
 		write(STDOUT_FILENO, "$ ", 3);
 		cmd = read_cmd();
+		if (!cmd)
+			continue;
 		args = split_lines(cmd, " \t\r\n");
 		exec_cmd(args, env);
 		free(args);
@@ -32,20 +33,19 @@ int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unus
 }
 
 /* TODO - incorrect commands more than two letters gives malloc error */
-/*
-char *_getenv(char *search_path, char **env)
+
+char *_getenv(char *search_path)
 {
-	int i = 0, size = 0;
+	int i = 0;
 	char *s = NULL;
 	char *a = NULL;
+	char **stri = NULL;
 	int found = 0;
-	if (search_path == NULL)
-		return (NULL);
 
-	while (env[i])
+	while (environ[i])
 	{
-		a = strdup(env[i]);
-		char **stri = split_lines(a, "=");
+		a = strdup(environ[i]);
+		stri = split_lines(a, "=");
 		s = stri[0];
 
 		if (strcmp(search_path, s) == 0)
@@ -53,28 +53,19 @@ char *_getenv(char *search_path, char **env)
 			found = 1;
 			break;
 		}
-		free(stri[0]);
-		free(stri[1]);
-		free(stri);
 		i++;
 	}
-
-
+	
 	if (found == 1)
 	{
 		char **str = split_lines(a, "=");
 		s = str[1];
-		free(str[0]);
-		free(str[1]);
-		free(str);
 	}
 	else
-		s = NULL;
-	free(a);
+		return (NULL);
 
 	return (s);
 }
-*/
 
 /* char **copyenv(char **environ)
 {
@@ -109,4 +100,4 @@ char *_getenv(char *search_path, char **env)
 
 	return (new_environ);
 }
- */
+*/

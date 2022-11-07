@@ -15,9 +15,9 @@ int _setenv(char *env_name, char *env_value, int overwrite)
 	if (env_name == NULL || env_value == NULL)
 		return (-1);
 
-	/* if (overwrite == 0 && getenv(env_name, environ))
+	/* if (overwrite == 0 && _getenv(env_name, environ))
 		return (0); */
-	if (overwrite == 0 && getenv(env_name))
+	if (overwrite == 0 && _getenv(env_name))
 		return (0);
 	
 
@@ -44,10 +44,10 @@ int _unsetenv(char *env_name)
 	if (env_name == NULL)
 		return (-1);
 	/*
-		if (!getenv(env_name, environ))
+		if (!_getenv(env_name, environ))
 			return (0); */
 
-	if (!getenv(env_name))
+	if (!_getenv(env_name))
 		return (0);
 
 	while (env_name[i])
