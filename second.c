@@ -30,6 +30,7 @@ char *_which(char *search_var, char **env  __attribute_maybe_unused__)
 		paths = split_lines(s, ":");
 
 		strA = malloc(sizeof(search_var) * 10);
+		strcpy(strA, "");
 		strcat(strA, "/");
 		strcat(strA, search_var);
 
