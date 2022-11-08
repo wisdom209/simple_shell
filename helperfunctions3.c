@@ -18,20 +18,6 @@ int _printf(const char *format, ...)
 			_putchar(format[i]);
 			count++;
 		}
-		else
-		{
-			if (format[i + 1] == 'c')
-			{
-				char c = va_arg(ptr, int);
-
-				if (c == 0)
-					return (-1);
-
-				_putchar(c);
-				count = count + 1;
-				i = i + 1;
-			}
-		}
 		if (format[i + 1] == 's')
 		{
 			char *s = va_arg(ptr, char *);

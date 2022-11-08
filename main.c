@@ -11,7 +11,7 @@ char *shell_name;
  * @env: environment variables
  * Return: 0 on success
  */
-int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unused__, char **env __attribute_maybe_unused__)
+int main(int argc __attribute__ ((unused)), char **argv, char **env)
 {
 	/* home = _getenv("HOME", env); */
 
@@ -36,7 +36,12 @@ int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unus
 }
 
 /* TODO - incorrect commands more than two letters gives malloc error */
-
+/**
+ * _getenv - getenv
+ * @search_path: search path
+ *
+ * Return: char *
+ */
 char *_getenv(char *search_path)
 {
 	int i = 0;

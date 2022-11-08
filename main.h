@@ -17,6 +17,8 @@ extern char *shell_name;
 extern char *home;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
+int check_token_length(char *str, char *delimiter,
+					   int t_index, int token_size);
 int exec_cmd(char **args, char **env);
 char *_which(char *path, char **env);
 char *_getenv(char *search_path);

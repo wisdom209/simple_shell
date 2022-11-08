@@ -36,10 +36,8 @@ int _unsetenv(char *env_name)
 
 	if (env_name == NULL)
 		return (-1);
-
 	if (!_getenv(env_name))
 		return (0);
-
 	while (env_name[i])
 	{
 		if (env_name[i] == '=')
@@ -48,11 +46,9 @@ int _unsetenv(char *env_name)
 		}
 		i++;
 	}
-
 	size = 0;
 	while (environ[size])
 		size++;
-
 	for (i = 0; i < size; i++)
 	{
 		char *a = split_lines(environ[i], "=")[0];
@@ -63,7 +59,6 @@ int _unsetenv(char *env_name)
 			break;
 		}
 	}
-
 	for (i = location; i < size; i++)
 	{
 		if (environ[i + 1] == NULL)

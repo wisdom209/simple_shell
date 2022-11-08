@@ -44,46 +44,26 @@ char **split_lines(char *newstr, char *delimiter)
 {
 	char *str;
 	char **tokens;
-	int token_size, t_index, strsize, indexer = -1, i = 0, j = 0, k = 0;
-
-	token_size = 0;
-	t_index = 0;
+	int token_size = 0, t_index = 0, strsize, indexer = -1, i = 0, j = 0, k = 0;
 
 	if (newstr == NULL)
 		return (NULL);
-
 	str = malloc(sizeof(char) * strlen(newstr) + 2);
 	if (str == NULL)
 		return (NULL);
 	strcpy(str, "");
 	strcat(str, newstr);
-	strcat(str, delimiter); /* this line makes it work*/
-	/* and i have no idea why??? */
+	strcat(str, delimiter);
 	strsize = strlen(str);
-	while (str[t_index] != '\0')
-	{
-		if (isDelim(str[token_size], delimiter))
-		{
-			token_size++;
-		}
-		t_index++;
-	}
-
+	token_size = check_token_length(str, delimiter, t_index, token_size);
 	tokens = malloc(sizeof(char *) * token_size);
 	if (tokens == NULL)
 		return (NULL);
 
-	indexer = -1;
-
-	i = 0;
-	j = 0;
-	k = 0;
 	for (i = 0; str[i] != '\0'; i++)
 	{
 		if (isDelim(str[i], delimiter))
-		{
 			continue;
-		}
 
 		indexer++;
 		tokens[indexer] = calloc(1, sizeof(char) * strsize);
@@ -95,17 +75,11 @@ char **split_lines(char *newstr, char *delimiter)
 				i = j - 1;
 				break;
 			}
-
 			tokens[indexer][k] = str[j];
 			k++;
 		}
 	}
 	tokens[indexer + 1] = NULL;
-
-	/**
-	 * free(str);
-	 * free(newstr);
-	 */
 	return (tokens);
 }
 /**
@@ -148,4 +122,27 @@ int exec_cmd(char **args, char *env[])
 	}
 
 	return (0);
+}
+
+/**
+ * check_token_length - expected num of tokens ??
+ * @str: string to break
+ * @delimiter: delim
+ * @t_index: token index
+ * @token_size: expected size
+ *
+ * Return: int
+ */
+int check_token_length(char *str, char *delimiter, int t_index, int token_size)
+{
+
+	while (str[t_index] != '\0')
+	{
+		if (isDelim(str[token_size], delimiter))
+		{
+			token_size++;
+		}
+		t_index++;
+	}
+	return (token_size);
 }

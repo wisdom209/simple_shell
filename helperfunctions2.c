@@ -4,47 +4,46 @@
  * @args: parameter
  * @env: env
  */
-void change_dir(char **args, char **env __attribute_maybe_unused__)
+void change_dir(char **args, char **env __attribute__ ((unused)))
 {
-	/* TODO - FIX EMPTY ARG TO CD */
 	curr_dir = getcwd(NULL, 0);
 	if (args[2])
 	{
 		printf("bash : too many arguments\n");
-		return;
 	}
-	else if (!args[1] || strcmp(args[1], "~") == 0 || strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
+	else if (!args[1] || strcmp(args[1], "~") == 0
+	|| strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
 	{
 		int a = chdir(home);
+
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
 			return;
 		}
 		old_dir = curr_dir;
-		return;
 	}
 	else if (args[1] && strcmp(args[1], "-") == 0)
 	{
 		int a = chdir(old_dir);
+
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
 			return;
 		}
 		old_dir = curr_dir;
-		return;
 	}
 	else if (args[1])
 	{
 		int a = chdir(args[1]);
+
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
 			return;
 		}
 		old_dir = curr_dir;
-		return;
 	}
 }
 
@@ -54,8 +53,6 @@ void change_dir(char **args, char **env __attribute_maybe_unused__)
  */
 void call_exit(char **args)
 {
-	/* TODO - get the implementations of atoi*/
-
 	if (!args[1])
 	{
 		exit(0);
@@ -103,18 +100,12 @@ void call_exit(char **args)
  */
 char *_getline(void)
 {
-	int RL_BUFF_SIZE = 14096;
-	int buffsize = RL_BUFF_SIZE;
-	int position = 0;
+	int RL_BUFF_SIZE = 14096, buffsize = RL_BUFF_SIZE, position = 0, r;
 	char *buffer = malloc(sizeof(char) * buffsize);
 	char c;
-	int r;
 
 	if (!buffer)
-	{
 		return (NULL);
-	}
-
 	while (1)
 	{
 		r = read(0, &c, 1);
@@ -124,25 +115,17 @@ char *_getline(void)
 			return (buffer);
 		}
 		else if (c == '\0')
-		{
 			return (NULL);
-		}
-		else
-		{
-			buffer[position] = c;
-		}
-		position++;
 
+		buffer[position] = c;
+		position++;
 		if (position >= buffsize)
 		{
 			buffsize += RL_BUFF_SIZE;
 			buffer = realloc(buffer, buffsize);
 
 			if (!buffer)
-			{
 				return (NULL);
-			}
 		}
 	}
 }
-
