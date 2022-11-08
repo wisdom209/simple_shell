@@ -17,7 +17,7 @@ char *_which(char *search_var, char **env __attribute_maybe_unused__)
 	{
 		if (check_file_access(search_var) != 1)
 		{
-			printf("%s: command not found\n", search_var);
+			printf("%s: No such file or directory\n", shell_name);
 			return (NULL);
 		}
 		return (search_var);
@@ -56,7 +56,7 @@ char *_which(char *search_var, char **env __attribute_maybe_unused__)
 			i++;
 		}
 	}
-	printf("%s: command not found\n", search_var);
+	printf("%s: No such file or directory\n", shell_name);
 
 	return (NULL);
 }
@@ -130,7 +130,7 @@ int call_inbuilt_func(char **args, char **env)
 	
 	s = _which(args[0], environ);
 	if (s == NULL)
-	{
+	{ 
 		return (1);
 	}
 	return (0);

@@ -13,6 +13,7 @@
 extern char **environ;
 extern char *old_dir;
 extern char *curr_dir;
+extern char *shell_name;
 extern char *home;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);

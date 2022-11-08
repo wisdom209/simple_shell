@@ -3,6 +3,7 @@
 char *old_dir;
 char *curr_dir;
 char *home;
+char *shell_name;
 /**
  * main - main function
  * @argc: argument count
@@ -17,6 +18,7 @@ int main(int argc __attribute_maybe_unused__, char **argv __attribute_maybe_unus
 	char *cmd;
 	char **args;
 	home = _getenv("HOME");
+	shell_name = argv[0];
 	while (1)
 	{
 		write(STDOUT_FILENO, "$ ", 3);
@@ -55,7 +57,7 @@ char *_getenv(char *search_path)
 		}
 		i++;
 	}
-	
+
 	if (found == 1)
 	{
 		char **str = split_lines(a, "=");
