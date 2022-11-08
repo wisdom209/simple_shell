@@ -19,12 +19,9 @@ int _setenv(char *env_name, char *env_value, int overwrite)
 		return (0); */
 	if (overwrite == 0 && _getenv(env_name))
 		return (0);
-	
 
 	strcat(path_to_add, "=");
 	strcat(path_to_add, env_value);
-
-	
 
 	putenv(path_to_add);
 

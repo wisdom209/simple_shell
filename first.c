@@ -10,8 +10,7 @@ char *read_cmd()
 
 	if (buf == NULL)
 	{
-		exit(0);
-
+		kill(getpid(), 2);
 	}
 
 	return (buf);
@@ -69,7 +68,7 @@ char **split_lines(char *newstr, char *delimiter)
 		t_index++;
 	}
 
-	tokens = malloc(sizeof(char*) * token_size);
+	tokens = malloc(sizeof(char *) * token_size);
 	if (tokens == NULL)
 		return NULL;
 

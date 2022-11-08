@@ -81,8 +81,12 @@ int check_file_access(char *filepath)
  */
 int call_inbuilt_func(char **args, char **env)
 {
-	if(args[0] == NULL)
+
+	char *s;
+
+	if (args[0] == NULL)
 		return (1);
+
 	if (strcmp(args[0], "cd") == 0)
 	{
 		change_dir(args, env);
@@ -121,6 +125,12 @@ int call_inbuilt_func(char **args, char **env)
 		else
 			printf("invalid input\n");
 
+		return (1);
+	}
+	
+	s = _which(args[0], environ);
+	if (s == NULL)
+	{
 		return (1);
 	}
 	return (0);
