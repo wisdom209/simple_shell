@@ -1,9 +1,9 @@
 #include "main.h"
 
-/*
+/**
  * check_location - check location
  * @args: arguments
- *
+ * @delimiter: arguments
  * Return: int
  */
 int check_location(char **args, char *delimiter)

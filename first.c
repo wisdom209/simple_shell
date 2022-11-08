@@ -6,6 +6,7 @@
 char *read_cmd()
 {
 	char *buf = NULL;
+
 	buf = _getline();
 
 	if (buf == NULL)
@@ -36,7 +37,7 @@ int isDelim(char c, char *delim)
 /**
  * split_lines - split by delimiters
  * @newstr: parameter
- * @delimiters: parameter
+ * @delimiter: parameter
  * Return: array of strings
  */
 char **split_lines(char *newstr, char *delimiter)
@@ -53,7 +54,7 @@ char **split_lines(char *newstr, char *delimiter)
 
 	str = malloc(sizeof(char) * strlen(newstr) + 2);
 	if (str == NULL)
-		return NULL;
+		return (NULL);
 	strcpy(str, "");
 	strcat(str, newstr);
 	strcat(str, delimiter); /* this line makes it work*/
@@ -70,7 +71,7 @@ char **split_lines(char *newstr, char *delimiter)
 
 	tokens = malloc(sizeof(char *) * token_size);
 	if (tokens == NULL)
-		return NULL;
+		return (NULL);
 
 	indexer = -1;
 
@@ -101,8 +102,10 @@ char **split_lines(char *newstr, char *delimiter)
 	}
 	tokens[indexer + 1] = NULL;
 
-	/* free(str);
-	free(newstr); */
+	/**
+	 * free(str);
+	 * free(newstr);
+	 */
 	return (tokens);
 }
 /**
@@ -135,6 +138,7 @@ int exec_cmd(char **args, char *env[])
 	else if (ch_pid > 0)
 	{
 		int status;
+
 		wait(&status);
 	}
 	else

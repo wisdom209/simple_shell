@@ -96,8 +96,6 @@ void call_exit(char **args)
 
 		return;
 	}
-
-	return;
 }
 /**
  * _getline - reads line from STDIN
@@ -123,7 +121,7 @@ char *_getline(void)
 		if (c == EOF || c == '\n' || r < 0)
 		{
 			buffer[position] = '\0';
-			return buffer;
+			return (buffer);
 		}
 		else if (c == '\0')
 		{

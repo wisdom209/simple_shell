@@ -127,10 +127,10 @@ int call_inbuilt_func(char **args, char **env)
 
 		return (1);
 	}
-	
+
 	s = _which(args[0], environ);
 	if (s == NULL)
-	{ 
+	{
 		return (1);
 	}
 	return (0);
