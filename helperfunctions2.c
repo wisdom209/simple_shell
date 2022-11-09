@@ -4,35 +4,36 @@
  * @args: parameter
  * @env: env
  */
-void change_dir(char **args, char **env __attribute__ ((unused)))
+void change_dir(char **args, char **env __attribute__((unused)))
 {
-	curr_dir = getcwd(NULL, 0);
+	char *curr_dir = getcwd(NULL, 0);
+
 	if (args[2])
 	{
 		printf("bash : too many arguments\n");
 	}
-	else if (!args[1] || strcmp(args[1], "~") == 0
-	|| strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
+	else if (!args[1] || strcmp(args[1], "~") == 0 ||
+	strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
 	{
-		int a = chdir(home);
+		int a = chdir(_getenv("HOME"));
 
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
 			return;
 		}
-		old_dir = curr_dir;
+		set_directory(curr_dir);
 	}
 	else if (args[1] && strcmp(args[1], "-") == 0)
 	{
-		int a = chdir(old_dir);
+		int a = chdir(_getenv("OLDPWD"));
 
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
 			return;
 		}
-		old_dir = curr_dir;
+		set_directory(curr_dir);
 	}
 	else if (args[1])
 	{
@@ -43,7 +44,7 @@ void change_dir(char **args, char **env __attribute__ ((unused)))
 			printf("bash : not a directory\n");
 			return;
 		}
-		old_dir = curr_dir;
+		set_directory(curr_dir);
 	}
 }
 
@@ -128,4 +129,14 @@ char *_getline(void)
 				return (NULL);
 		}
 	}
+}
+
+/**
+ * set_directory - sets directory
+ * @curr_dir: where to set old dir to
+ */
+void set_directory(char *curr_dir)
+{
+	_setenv("OLDPWD", curr_dir, 1);
+	_setenv("PWD", getcwd(NULL, 0), 1);
 }

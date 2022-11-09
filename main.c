@@ -1,8 +1,5 @@
 #include "main.h"
 
-char *old_dir;
-char *curr_dir;
-char *home;
 char *shell_name;
 /**
  * main - main function
@@ -11,14 +8,14 @@ char *shell_name;
  * @env: environment variables
  * Return: 0 on success
  */
-int main(int argc __attribute__ ((unused)), char **argv, char **env)
+int main(int argc __attribute__((unused)), char **argv, char **env)
 {
-	/* home = _getenv("HOME", env); */
-
 	char *cmd;
 	char **args;
 
-	home = _getenv("HOME");
+	if (_getenv("OLDPWD") == NULL)
+		_setenv("OLDPWD", _getenv("HOME"), 1);
+
 	shell_name = argv[0];
 	while (1)
 	{

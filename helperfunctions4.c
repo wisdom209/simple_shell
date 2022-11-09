@@ -1,27 +1,38 @@
 #include "main.h"
+#include "errno.h"
 /**
  * _setenv - set environment
- * @env_name: parameter
- * @env_value: parameter
+ * @name: parameter
+ * @value: parameter
  * @overwrite: parameter
  * Return: 0/-1
  */
-int _setenv(char *env_name, char *env_value, int overwrite)
+int _setenv(char *name, char *value, int overwrite)
 {
-	char *path_to_add = env_name;
+	char *es;
 
-	if (env_name == NULL || env_value == NULL)
+	if (name == NULL || name[0] == '\0' || strchr(name, '=') != NULL ||
+		value == NULL)
+	{
+		errno = EINVAL;
 		return (-1);
+	}
 
-	if (overwrite == 0 && _getenv(env_name))
+	if (_getenv(name) != NULL && overwrite == 0)
 		return (0);
 
-	strcat(path_to_add, "=");
-	strcat(path_to_add, env_value);
+	_unsetenv(name); /* Remove all occurrences */
 
-	putenv(path_to_add);
+	es = malloc(strlen(name) + strlen(value) + 2);
+	/* +2 for '=' and null terminator */
+	if (es == NULL)
+		return (-1);
 
-	return (0);
+	strcpy(es, name);
+	strcat(es, "=");
+	strcat(es, value);
+
+	return ((putenv(es) != 0) ? -1 : 0);
 }
 
 /* unset env... does not use malloc, should not need to be freed */

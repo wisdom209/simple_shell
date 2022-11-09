@@ -11,10 +11,7 @@
 #include <limits.h>
 
 extern char **environ;
-extern char *old_dir;
-extern char *curr_dir;
 extern char *shell_name;
-extern char *home;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int check_token_length(char *str, char *delimiter,
@@ -33,5 +30,6 @@ int _putchar(char c);
 int isDelim(char c, char *delim);
 int _setenv(char *env_name, char *env_value, int overwrite);
 int _unsetenv(char *env_name);
+void set_directory(char *curr_dir);
 
 #endif /* MAIN_H */

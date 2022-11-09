@@ -5,7 +5,7 @@
             "label": "C/C++: gcc build active file",
             "command": "/usr/bin/gcc",
             "args": [
-                "-fanalyzer",
+                /* "-fanalyzer", */
                 "-Wall",
                 "-Werror",
                 "-Wextra",
