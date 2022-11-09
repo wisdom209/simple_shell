@@ -61,20 +61,20 @@ int _strlen(char *s)
 char *_strdup(char *src)
 {
 	int src_size;
-    static char *dest;
-    char *dest_pointer;
+	static char *dest;
+	char *dest_pointer;
 
-    /* Allocate memory for destlicate */
-    src_size = strlen(src);
-    dest = (char *)malloc(src_size + 1);
-    if (!dest)
-        return (NULL);
+	/* Allocate memory for destlicate */
+	src_size = strlen(src);
+	dest = (char *)malloc(src_size + 1);
+	if (!dest)
+		return (NULL);
 
-    /* Copy string */
-    dest_pointer = dest;
-    while (*src)
-        *dest_pointer++ = *src++;
-    *dest_pointer = '\0';
+	/* Copy string */
+	dest_pointer = dest;
+	while (*src)
+		*dest_pointer++ = *src++;
+	*dest_pointer = '\0';
 
-    return(dest);
+	return (dest);
 }
