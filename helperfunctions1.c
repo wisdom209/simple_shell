@@ -69,6 +69,7 @@ int check_file_access(char *filepath)
 int call_inbuilt_func(char **args, char **env)
 {
 	char *s;
+	int i;
 
 	if (args[0] == NULL)
 		return (1);
@@ -84,12 +85,33 @@ int call_inbuilt_func(char **args, char **env)
 	}
 	if (strcmp(args[0], "setenv") == 0)
 	{
-		if (args[1] && args[2] && !args[3])
+		if (args[3])
+			_printf("%s: illegal number of arguments\n", shell_name);
+		else if (args[1] && args[2])
 			_setenv(args[1], args[2], 0);
 		else
-			printf("invalid input\n");
+			_printf("%s: illegal number of arguments\n", shell_name);
 		return (1);
 	}
+
+	if (check_unsetenv(args) == 1)
+		return (1);
+
+	s = _which(args[0], environ);
+
+	if (s == NULL)
+		return (1);
+	return (0);
+}
+
+/**
+ * check_unsetenv  - checks commands to env
+ * @args: arguments given
+ *
+ * Return: int
+ */
+int check_unsetenv(char **args)
+{
 	if (strcmp(args[0], "unsetenv") == 0)
 	{
 		if (args[2])
@@ -103,9 +125,5 @@ int call_inbuilt_func(char **args, char **env)
 			printf("invalid input\n");
 		return (1);
 	}
-	s = _which(args[0], environ);
-
-	if (s == NULL)
-		return (1);
 	return (0);
 }

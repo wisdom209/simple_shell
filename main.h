@@ -31,5 +31,6 @@ int isDelim(char c, char *delim);
 int _setenv(char *env_name, char *env_value, int overwrite);
 int _unsetenv(char *env_name);
 void set_directory(char *curr_dir);
+int check_unsetenv(char **args);
 
 #endif /* MAIN_H */
