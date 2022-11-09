@@ -1,6 +1,5 @@
 #include "main.h"
 
-char *shell_name;
 /**
  * main - main function
  * @argc: argument count
@@ -12,11 +11,12 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 {
 	char *cmd;
 	char **args;
+	char *shell_name = argv[0];
 
 	if (_getenv("OLDPWD") == NULL)
 		_setenv("OLDPWD", _getenv("HOME"), 1);
+	_setenv("shell_name", shell_name, 1);
 
-	shell_name = argv[0];
 	while (1)
 	{
 		write(STDOUT_FILENO, "$ ", 3);

@@ -8,7 +8,7 @@
 char *_which(char *search_var, char **env __attribute__((unused)))
 {
 	int i = 0;
-	char *s = NULL, *strA = NULL;
+	char *s = NULL, *strA = NULL, *shell_name = _getenv("shell_name");
 	char **paths;
 
 	if (search_var[0] == '/')
@@ -68,7 +68,7 @@ int check_file_access(char *filepath)
  */
 int call_inbuilt_func(char **args, char **env)
 {
-	char *s;
+	char *s, *shell_name = _getenv("shell_name");
 
 	if (args[0] == NULL)
 		return (1);

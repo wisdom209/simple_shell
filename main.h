@@ -11,7 +11,6 @@
 #include <limits.h>
 
 extern char **environ;
-extern char *shell_name;
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int check_token_length(char *str, char *delimiter,
