@@ -69,7 +69,6 @@ int check_file_access(char *filepath)
 int call_inbuilt_func(char **args, char **env)
 {
 	char *s;
-	int i;
 
 	if (args[0] == NULL)
 		return (1);

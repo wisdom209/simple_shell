@@ -110,7 +110,7 @@ char *_getline(void)
 	while (1)
 	{
 		r = read(0, &c, 1);
-		if (c == EOF || c == '\n' || r < 0)
+		if (c == (unsigned char)EOF || c == '\n' || r < 0)
 		{
 			buffer[position] = '\0';
 			return (buffer);
