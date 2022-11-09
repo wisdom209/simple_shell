@@ -31,5 +31,8 @@ int _setenv(char *env_name, char *env_value, int overwrite);
 int _unsetenv(char *env_name);
 void set_directory(char *curr_dir);
 int check_unsetenv(char **args);
+char *_strcat(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
+int _strlen(char *s);
 
 #endif /* MAIN_H */
