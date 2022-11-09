@@ -54,7 +54,9 @@ int _strlen(char *s)
 }
 
 /**
- * _
+ * _strdup - duplicates strings
+ * @src: source
+ * Return: string
 */
 char *_strdup(char *src)
 {
