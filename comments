@@ -31,4 +31,17 @@
 
 	return (new_environ);
 }
+int commandSep(char **args)
+{
+	int j = 0, i = 0;
+	char *location = _which(args[j], environ);
+
+	while (args[i])
+	{
+		if (args[i] == ";")
+			execve(location, args, environ);
+		i++;
+		j = i;
+	}
+}
 */
