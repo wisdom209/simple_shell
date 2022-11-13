@@ -25,17 +25,10 @@ int _setenv(char *name, char *value, int overwrite)
 		return (0);
 	}
 	free(env_name_check);
-
-	_unsetenv(name); /* Remove all occurrences */
-
-	/* es = malloc(strlen(name) + strlen(value) + 2); */
-	/* +2 for '=' and null terminator */
-	/* if (es == NULL)
-		return (-1); */
-
-	strcpy(es, name);
-	strcat(es, "=");
-	strcat(es, value);
+	_unsetenv(name);
+	_strcpy(es, name);
+	_strcat(es, "=");
+	_strcat(es, value);
 
 	return (setenv(name, value, 1));
 }
@@ -53,7 +46,6 @@ int _unsetenv(char *env_name)
 
 	if (env_name == NULL)
 		return (-1);
-
 	env_name_check = _getenv(env_name);
 	if (!env_name_check)
 	{
@@ -64,30 +56,15 @@ int _unsetenv(char *env_name)
 	while (env_name[i])
 	{
 		if (env_name[i] == '=')
-		{
 			return (-1);
-		}
 		i++;
 	}
 	size = 0;
 	while (environ[size])
 		size++;
-	for (i = 0; i < size; i++)
-	{
-		char *tmpa;
-		char *a = strdup(environ[i]);
 
-		tmpa = a;
-		a = _strtok(a, "=");
+	set_location_of_var_to_unset(size, env_name, &location);
 
-		if (strcmp(a, env_name) == 0)
-		{
-			free(tmpa);
-			location = i;
-			break;
-		}
-		free(tmpa);
-	}
 	for (i = location; i < size; i++)
 	{
 		if (environ[i + 1] == NULL)
@@ -98,4 +75,52 @@ int _unsetenv(char *env_name)
 		environ[i] = environ[i + 1];
 	}
 	return (0);
+}
+
+/**
+ * set_location_of_var_to_unset - like it says
+ * @size: environment variable array size
+ * @env_name: environment variable to unset
+ * @location: address of location variable to set
+ *
+ * Return: void
+ */
+void set_location_of_var_to_unset(int size, char *env_name, int *location)
+{
+	int i;
+
+	for (i = 0; i < size; i++)
+	{
+		char *tmpa;
+		char *a = strdup(environ[i]);
+
+		tmpa = a;
+		a = _strtok(a, "=");
+		if (_strcmp(a, env_name) == 0)
+		{
+			free(tmpa);
+			*location = i;
+			break;
+		}
+		free(tmpa);
+	}
+}
+
+/**
+ * _getenv - getenv
+ * @search_path: search path
+ *
+ * Return: char *
+ */
+char *_getenv(char *search_path)
+{
+	char *a;
+	char *s = getenv(search_path);
+
+	if (s != NULL)
+		a = _strdup(s);
+	else
+		a = NULL;
+
+	return (a);
 }

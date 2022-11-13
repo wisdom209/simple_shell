@@ -11,6 +11,7 @@
 #include <limits.h>
 
 extern char **environ;
+void free_malloc_strings(int count, ...);
 char **_split(char *line, char *delimiter);
 char *_strtok(char *str, const char *delim);
 char *read_cmd();
@@ -22,6 +23,8 @@ char *_which(char *path, char **env);
 char *_getenv(char *search_path);
 int check_file_access(char *filepath);
 int call_inbuilt_func(char **args, char **env, char readbuf[]);
+char *search_absolute_path(char *shell_name, char *search_var);
+void concat_malloc_str(char *str, char *first_str, char *sec_str);
 void change_dir(char **args, char **env);
 void call_exit(char **args, char readbuf[]);
 char *_getline();
@@ -37,5 +40,9 @@ char *_strcat(char *dest, char *src);
 int _strcmp(char *s1, char *s2);
 int _strlen(char *s);
 char *_strdup(char *src);
+char *_strcpy(char *destination, char *source);
+void cd_home(char *curr_dir);
+void free_arguments_and_buffer(char **args, char readbuf[]);
+void set_location_of_var_to_unset(int size, char *env_name, int *location);
 
 #endif /* MAIN_H */

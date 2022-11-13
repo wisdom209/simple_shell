@@ -1,4 +1,5 @@
 #include "main.h"
+
 /**
  * _strcat - appends
  * @dest: first
@@ -57,7 +58,7 @@ int _strlen(char *s)
  * _strdup - duplicates strings
  * @src: source
  * Return: string
-*/
+ */
 char *_strdup(char *src)
 {
 	int src_size;
@@ -65,7 +66,7 @@ char *_strdup(char *src)
 	char *dest_pointer;
 
 	/* Allocate memory for destlicate */
-	src_size = strlen(src);
+	src_size = _strlen(src);
 	dest = (char *)malloc(src_size + 1);
 	if (!dest)
 		return (NULL);
@@ -79,50 +80,29 @@ char *_strdup(char *src)
 	return (dest);
 }
 
-char *_strtok(char *str, const char *delim)
+/**
+ * _strcpy - string copy
+ * @destination: destination string
+ * @source: source string
+ *
+ * Return: destination copy
+ */
+char *_strcpy(char *destination, char *source)
 {
-	static char *s_str = NULL; /* var to store last address */
-	char *p;
+	char *ptr;
 
-	if (delim == NULL || (str == NULL && s_str == NULL))
+	if (destination == NULL)
+		return (NULL);
+
+	ptr = destination;
+
+	while (*source != '\0')
 	{
-		return NULL;
+		*destination = *source;
+		destination++;
+		source++;
 	}
 
-	if (str == NULL)
-	{
-		str = s_str;
-	}
-
-	/* if delim is not contained in str, return str */
-	if ((p = strstr(str, delim)) == NULL)
-	{
-		s_str = NULL;
-		return str;
-	}
-
-	/*
-	 * check for consecutive delimiters
-	 * if first char is delim, return delim
-	 */
-	if (str[0] == delim[0])
-	{
-		s_str++;
-		return (char *)delim;
-	}
-
-	/* terminate the string */
-	*p = '\0';
-
-	/* save the rest of the string */
-	if ((p + 1) != NULL)
-	{
-		s_str = (p + 1);
-	}
-	else
-	{
-		s_str = NULL;
-	}
-
-	return str;
+	*destination = '\0';
+	return (ptr);
 }
