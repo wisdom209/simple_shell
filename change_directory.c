@@ -34,7 +34,6 @@ void change_dir(char **args, char **env __attribute__((unused)))
 	else if (!args[1] || _strcmp(args[1], "~") == 0 ||
 			 _strcmp(args[1], "--") == 0 || _strcmp(args[1], "$HOME") == 0)
 		cd_home(curr_dir);
-
 	else if (args[1])
 	{
 		int a = chdir(args[1]);

@@ -33,6 +33,7 @@ int exec_cmd(char **args, char *env[], char readbuf[])
 		int status;
 
 		wait(&status);
+
 	}
 	else
 	{

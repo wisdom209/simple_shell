@@ -12,7 +12,7 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 	char *cmd;
 	char **args;
 	char *shell_name = argv[0];
-	
+
 	_setenv("_", shell_name, 1);
 
 	while (1)

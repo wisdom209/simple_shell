@@ -23,7 +23,7 @@ char *_which(char *path, char **env);
 char *_getenv(char *search_path);
 int check_file_access(char *filepath);
 int call_inbuilt_func(char **args, char **env, char readbuf[]);
-char *search_absolute_path(char *shell_name, char *search_var);
+char *search_abs_path(char *shell_name, char *search_var);
 void concat_malloc_str(char *str, char *first_str, char *sec_str);
 void change_dir(char **args, char **env);
 void call_exit(char **args, char readbuf[]);

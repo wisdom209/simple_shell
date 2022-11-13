@@ -10,13 +10,12 @@ char *_which(char *search_var, char **env __attribute__((unused)))
 	int i = 0;
 	char *s = NULL, *strA = NULL, *shell_name = _getenv("_");
 	char **paths;
+	char *search_ret = strdup(search_var);
 
-	if (search_var[0] == '/')
-	{
-		char *news = search_absolute_path(shell_name, search_var);
-		if (news != NULL)
-			return (search_var);
-	}
+	if (search_var[0] == '/' && (search_abs_path(shell_name, search_var) != NULL))
+		return (search_ret);
+
+	free(search_ret);
 	s = _getenv("PATH"), strA = malloc(sizeof(search_var) * 10);
 	paths = _split(s, ":");
 	free(s);
@@ -51,15 +50,14 @@ char *_which(char *search_var, char **env __attribute__((unused)))
 }
 
 /**
- * search_absolute_path - as it says
+ * search_abs_path - as it says
  * @search_var: var to search
  * @shell_name: shell name
  *
  * Return: string
  */
-char *search_absolute_path(char *shell_name, char *search_var)
+char *search_abs_path(char *shell_name, char *search_var)
 {
-	shell_name = _getenv("_");
 	if (check_file_access(search_var) != 1)
 	{
 		_printf("%s: No such file or directory\n", shell_name);
