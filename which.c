@@ -10,7 +10,7 @@ char *_which(char *search_var, char **env __attribute__((unused)))
 	int i = 0;
 	char *s = NULL, *strA = NULL, *shell_name = _getenv("_");
 	char **paths;
-	char *search_ret = strdup(search_var);
+	char *search_ret = _strdup(search_var);
 
 	if (search_var[0] == '/' && (search_abs_path(shell_name, search_var) != NULL))
 		return (search_ret);

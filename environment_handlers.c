@@ -92,7 +92,7 @@ void set_location_of_var_to_unset(int size, char *env_name, int *location)
 	for (i = 0; i < size; i++)
 	{
 		char *tmpa;
-		char *a = strdup(environ[i]);
+		char *a = _strdup(environ[i]);
 
 		tmpa = a;
 		a = _strtok(a, "=");
