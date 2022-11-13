@@ -11,17 +11,19 @@
 #include <limits.h>
 
 extern char **environ;
+char **_split(char *line, char *delimiter);
+char *_strtok(char *str, const char *delim);
 char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int check_token_length(char *str, char *delimiter,
 					   int t_index, int token_size);
-int exec_cmd(char **args, char **env);
+int exec_cmd(char **args, char **env, char readbuf[]);
 char *_which(char *path, char **env);
 char *_getenv(char *search_path);
 int check_file_access(char *filepath);
-int call_inbuilt_func(char **args, char **env);
+int call_inbuilt_func(char **args, char **env, char readbuf[]);
 void change_dir(char **args, char **env);
-void call_exit(char **args);
+void call_exit(char **args, char readbuf[]);
 char *_getline();
 /* char **copyenv(char **env); */
 int _printf(const char *format, ...);

@@ -13,26 +13,34 @@ void change_dir(char **args, char **env __attribute__((unused)))
 		printf("bash : too many arguments\n");
 	}
 	else if (!args[1] || strcmp(args[1], "~") == 0 ||
-	strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
+			 strcmp(args[1], "--") == 0 || strcmp(args[1], "$HOME") == 0)
 	{
-		int a = chdir(_getenv("HOME"));
+		char *home = _getenv("HOME");
+		int a = chdir(home);
 
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
+			free(curr_dir);
+			free(home);
 			return;
 		}
 		set_directory(curr_dir);
+		free(home);
 	}
 	else if (args[1] && strcmp(args[1], "-") == 0)
 	{
-		int a = chdir(_getenv("OLDPWD"));
+		char *oldpwd = _getenv("OLDPWD");
+		int a = chdir(oldpwd);
 
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
+			free(curr_dir);
+			free(oldpwd);
 			return;
 		}
+		free(oldpwd);
 		set_directory(curr_dir);
 	}
 	else if (args[1])
@@ -42,20 +50,24 @@ void change_dir(char **args, char **env __attribute__((unused)))
 		if (a != 0)
 		{
 			printf("bash : not a directory\n");
+			free(curr_dir);
 			return;
 		}
 		set_directory(curr_dir);
 	}
+	free(curr_dir);
 }
 
 /**
  * call_exit - exit
  * @args: parameter
  */
-void call_exit(char **args)
+void call_exit(char **args, char readbuf[])
 {
 	if (!args[1])
 	{
+		free(readbuf);
+		free(args);
 		exit(0);
 	}
 	if (args[2])
@@ -67,6 +79,8 @@ void call_exit(char **args)
 	{
 		if (strlen(args[1]) == 1 && args[1][0] == '0')
 		{
+			free(readbuf);
+			free(args);
 			exit(0);
 		}
 		else if (args[1][0] == '-')
@@ -89,6 +103,8 @@ void call_exit(char **args)
 				printf("bash : illegal number\n");
 				return;
 			}
+			free(readbuf);
+			free(args);
 			exit(a % 256);
 		}
 
@@ -137,6 +153,8 @@ char *_getline(void)
  */
 void set_directory(char *curr_dir)
 {
+	char *cwd = getcwd(NULL, 0);
 	_setenv("OLDPWD", curr_dir, 1);
-	_setenv("PWD", getcwd(NULL, 0), 1);
+	_setenv("PWD", cwd, 1);
+	free(cwd);
 }

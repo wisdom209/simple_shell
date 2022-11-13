@@ -9,7 +9,8 @@
  */
 int _setenv(char *name, char *value, int overwrite)
 {
-	char *es;
+	char es[1024];
+	char *env_name_check;
 
 	if (name == NULL || name[0] == '\0' || strchr(name, '=') != NULL ||
 		value == NULL)
@@ -17,22 +18,26 @@ int _setenv(char *name, char *value, int overwrite)
 		errno = EINVAL;
 		return (-1);
 	}
-
-	if (_getenv(name) != NULL && overwrite == 0)
+	env_name_check = _getenv(name);
+	if (env_name_check != NULL && overwrite == 0)
+	{
+		free(env_name_check);
 		return (0);
+	}
+	free(env_name_check);
 
 	_unsetenv(name); /* Remove all occurrences */
 
-	es = malloc(strlen(name) + strlen(value) + 2);
+	/* es = malloc(strlen(name) + strlen(value) + 2); */
 	/* +2 for '=' and null terminator */
-	if (es == NULL)
-		return (-1);
+	/* if (es == NULL)
+		return (-1); */
 
 	strcpy(es, name);
 	strcat(es, "=");
 	strcat(es, value);
 
-	return ((putenv(es) != 0) ? -1 : 0);
+	return (setenv(name, value, 1));
 }
 
 /* unset env... does not use malloc, should not need to be freed */
@@ -44,11 +49,18 @@ int _setenv(char *name, char *value, int overwrite)
 int _unsetenv(char *env_name)
 {
 	int i = 0, size = 0, location = 0;
+	char *env_name_check;
 
 	if (env_name == NULL)
 		return (-1);
-	if (!_getenv(env_name))
+
+	env_name_check = _getenv(env_name);
+	if (!env_name_check)
+	{
+		free(env_name_check);
 		return (0);
+	}
+	free(env_name_check);
 	while (env_name[i])
 	{
 		if (env_name[i] == '=')
@@ -62,13 +74,19 @@ int _unsetenv(char *env_name)
 		size++;
 	for (i = 0; i < size; i++)
 	{
-		char *a = split_lines(environ[i], "=")[0];
+		char *tmpa;
+		char *a = strdup(environ[i]);
+
+		tmpa = a;
+		a = _strtok(a, "=");
 
 		if (strcmp(a, env_name) == 0)
 		{
+			free(tmpa);
 			location = i;
 			break;
 		}
+		free(tmpa);
 	}
 	for (i = location; i < size; i++)
 	{

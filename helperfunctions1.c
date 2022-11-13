@@ -8,22 +8,26 @@
 char *_which(char *search_var, char **env __attribute__((unused)))
 {
 	int i = 0;
-	char *s = NULL, *strA = NULL, *shell_name = _getenv("shell_name");
+	char *s = NULL, *strA = NULL, *shell_name;
 	char **paths;
 
 	if (search_var[0] == '/')
 	{
+		shell_name = _getenv("shell_name");
 		if (check_file_access(search_var) != 1)
 		{
 			_printf("%s: No such file or directory\n", shell_name);
+			free(shell_name);
 			return (NULL);
 		}
+		free(shell_name);
 		return (search_var);
 	}
 	else
 	{
 		s = _getenv("PATH"), strA = malloc(sizeof(search_var) * 10);
-		paths = split_lines(s, ":");
+		paths = _split(s, ":");
+		free(s);
 
 		if (strA == NULL)
 			return (NULL);
@@ -40,10 +44,19 @@ char *_which(char *search_var, char **env __attribute__((unused)))
 			strcat(checkstr, paths[i]);
 			strcat(checkstr, strA);
 			if (check_file_access(checkstr) == 1)
+			{
+				free(paths);
+				free(strA);
 				return (checkstr);
+			}
+			else
+				free(checkstr);
 			i++;
 		}
+		free(paths);
+		free(strA);
 	}
+
 	printf("%s: No such file or directory\n", shell_name);
 	return (NULL);
 }
@@ -66,9 +79,9 @@ int check_file_access(char *filepath)
  * @env: env
  * Return: 1 on success
  */
-int call_inbuilt_func(char **args, char **env)
+int call_inbuilt_func(char **args, char **env, char readbuf[])
 {
-	char *s, *shell_name = _getenv("shell_name");
+	char *s;
 
 	if (args[0] == NULL)
 		return (1);
@@ -79,17 +92,19 @@ int call_inbuilt_func(char **args, char **env)
 	}
 	if (strcmp(args[0], "exit") == 0)
 	{
-		call_exit(args);
+		call_exit(args, readbuf);
 		return (1);
 	}
 	if (strcmp(args[0], "setenv") == 0)
 	{
+		char *shell_name = _getenv("shell_name");
 		if (args[3])
 			_printf("%s: illegal number of arguments\n", shell_name);
 		else if (args[1] && args[2])
 			_setenv(args[1], args[2], 0);
 		else
 			_printf("%s: illegal number of arguments\n", shell_name);
+		free(shell_name);
 		return (1);
 	}
 
@@ -100,6 +115,8 @@ int call_inbuilt_func(char **args, char **env)
 
 	if (s == NULL)
 		return (1);
+
+	free(s);
 	return (0);
 }
 
@@ -125,4 +142,23 @@ int check_unsetenv(char **args)
 		return (1);
 	}
 	return (0);
+}
+
+char **_split(char *line, char *delimiter)
+{
+	size_t n = 1024;
+
+	char **tokens = (char **)malloc(n * sizeof(char *));
+
+	char *token;
+	int position = 0;
+	token = _strtok(line, delimiter);
+	while (token != NULL)
+	{
+		tokens[position] = token;
+		position++;
+		token = _strtok(NULL, delimiter);
+	}
+	tokens[position] = NULL;
+	return (tokens);
 }

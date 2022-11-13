@@ -80,6 +80,7 @@ char **split_lines(char *newstr, char *delimiter)
 		}
 	}
 	tokens[indexer + 1] = NULL;
+	free(str);
 	return (tokens);
 }
 /**
@@ -88,9 +89,9 @@ char **split_lines(char *newstr, char *delimiter)
  * @env: env
  * Return: 0 on success
  */
-int exec_cmd(char **args, char *env[])
+int exec_cmd(char **args, char *env[], char readbuf[])
 {
-	int a = call_inbuilt_func(args, env);
+	int a = call_inbuilt_func(args, env, readbuf);
 	char *location;
 	pid_t ch_pid;
 

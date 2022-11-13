@@ -10,21 +10,27 @@
 int main(int argc __attribute__((unused)), char **argv, char **env)
 {
 	char *cmd;
+	int i;
 	char **args;
 	char *shell_name = argv[0];
+	char *oldpwd = _getenv("OLDPWD");
+	char *home = _getenv("HOME");
 
-	if (_getenv("OLDPWD") == NULL)
-		_setenv("OLDPWD", _getenv("HOME"), 1);
+	if (oldpwd == NULL)
+		_setenv("OLDPWD", home, 1);
 	_setenv("shell_name", shell_name, 1);
+	free(home);
+	free(oldpwd);
 
 	while (1)
 	{
+		i = 0;
 		write(STDOUT_FILENO, "$ ", 3);
 		cmd = read_cmd();
 		if (!cmd)
 			continue;
-		args = split_lines(cmd, " \t\r\n");
-		exec_cmd(args, env);
+		args = _split(cmd, " ");
+		exec_cmd(args, env, cmd);
 		free(args);
 		free(cmd);
 	}
@@ -41,34 +47,12 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
  */
 char *_getenv(char *search_path)
 {
-	int i = 0;
-	char *s = NULL;
-	char *a = NULL;
-	char **stri = NULL;
-	int found = 0;
-
-	while (environ[i])
-	{
-		a = strdup(environ[i]);
-		stri = split_lines(a, "=");
-		s = stri[0];
-
-		if (strcmp(search_path, s) == 0)
-		{
-			found = 1;
-			break;
-		}
-		i++;
-	}
-
-	if (found == 1)
-	{
-		char **str = split_lines(a, "=");
-
-		s = str[1];
-	}
+	char *a;
+	char *s = getenv(search_path);
+	if (s != NULL)
+		a = strdup(s);
 	else
-		return (NULL);
+		a = NULL;
 
-	return (s);
+	return (a);
 }
