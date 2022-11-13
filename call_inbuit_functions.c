@@ -43,7 +43,7 @@ int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
 		if (args[3])
 			_printf("%s: illegal number of arguments\n", shell_name);
 		else if (args[1] && args[2])
-			_setenv(args[1], args[2], 0);
+			_setenv(args[1], args[2], 1);
 		else
 			_printf("%s: illegal number of arguments\n", shell_name);
 		free(shell_name);

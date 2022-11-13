@@ -114,13 +114,26 @@ void set_location_of_var_to_unset(int size, char *env_name, int *location)
  */
 char *_getenv(char *search_path)
 {
-	char *a;
-	char *s = getenv(search_path);
+	int i = 0;
+	char *result;
 
-	if (s != NULL)
-		a = _strdup(s);
-	else
-		a = NULL;
+	while (environ[i])
+	{
+		char *tmp_a;
+		char *a = _strdup(environ[i]);
+		tmp_a = a;
+		a = _strtok(a, "=");
 
-	return (a);
+		if (_strcmp(a, search_path) == 0)
+		{
+			a = _strtok(NULL, "=");
+			result = strdup(a);
+			free(tmp_a);
+			return (result);
+		}
+		free(tmp_a);
+		i++;
+	}
+
+	return (NULL);
 }

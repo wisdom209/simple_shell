@@ -180,4 +180,4 @@ But also in non-interactive mode:
 
 ## AUTHORS
 **GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
-**GitHub: [Amure Samuel](https://github.com/khun11)**
+**GitHub: [Amure Samuel](https://github.com/khun111)**
