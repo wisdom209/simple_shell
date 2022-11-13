@@ -5,11 +5,13 @@
  * @args: parameter
  * @env: env
  * @readbuf: input buffer
+ * @count: error count
+ *
  * Return: 0 on success
  */
-int exec_cmd(char **args, char *env[], char readbuf[])
+int exec_cmd(char **args, char *env[], char readbuf[], int *count)
 {
-	int a = call_inbuilt_func(args, env, readbuf);
+	int a = call_inbuilt_func(args, env, readbuf, count);
 	char *location;
 	pid_t ch_pid;
 

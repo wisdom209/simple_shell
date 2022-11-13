@@ -4,16 +4,15 @@
  * call_exit - exit
  * @args: parameter
  * @readbuf: read buffer
+ * @count: error count
  */
-void call_exit(char **args, char readbuf[])
+void call_exit(char **args, char readbuf[], int *count)
 {
 	if (!args[1])
 	{
 		free_arguments_and_buffer(args, readbuf);
 		exit(0);
 	}
-	if (args[2])
-		printf("bash: illegal number of arguments");
 	if (args[1])
 	{
 		if (_strlen(args[1]) == 1 && args[1][0] == '0')
@@ -23,26 +22,52 @@ void call_exit(char **args, char readbuf[])
 		}
 		else if (args[1][0] == '-')
 		{
-			printf("bash : illegal number\n");
+			char *shell_name = _getenv("_");
+
+			illegal_no_err(count, shell_name, args[1]);
+			free(shell_name);
 			return;
 		}
 		else
 		{
 			int a = atoi(args[1]);
+			int exit_err = handle_exit_num_errors(a, count, args);
 
-			if (a == 0)
-			{
-				printf("bash : illegal number\n");
+			if (exit_err == 1)
 				return;
-			}
-			if (a > INT_MAX || _strlen(args[1]) > 10)
-			{
-				printf("bash : illegal number\n");
-				return;
-			}
 			free_arguments_and_buffer(args, readbuf);
 			exit(a % 256);
 		}
 		return;
 	}
+}
+
+/**
+ * handle_exit_num_errors - handle errors
+ * @a: num to check
+ * @count: error count
+ * @args: current args
+ *
+ * Return: int
+ */
+int handle_exit_num_errors(int a, int *count, char **args)
+{
+
+	if (a == 0)
+	{
+		char *shell_name = _getenv("_");
+
+		illegal_no_err(count, shell_name, args[1]);
+		free(shell_name);
+		return (1);
+	}
+	if (a > INT_MAX || _strlen(args[1]) > 10)
+	{
+		char *shell_name = _getenv("_");
+
+		illegal_no_err(count, shell_name, args[1]);
+		free(shell_name);
+		return (1);
+	}
+	return (0);
 }

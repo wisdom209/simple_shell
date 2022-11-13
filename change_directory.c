@@ -5,29 +5,25 @@
  * @args: parameter
  * @env: env
  */
-void change_dir(char **args, char **env __attribute__((unused)))
+void change_dir(char **args, char **env __attribute__((unused)), int *count)
 {
 	char *curr_dir = getcwd(NULL, 0), *oldpw = _getenv("OLDPWD");
 
 	if (oldpw == NULL)
 		_setenv("OLDPWD", curr_dir, 1);
 	free(oldpw);
-	if (args[2] && isprint(args[2][0]))
-	{
-		printf("bash : too many arguments\n");
-		return;
-	}
-	else if (args[1] && _strcmp(args[1], "-") == 0)
+	if (args[1] && _strcmp(args[1], "-") == 0)
 	{
 		char *oldpwd = _getenv("OLDPWD");
 		int a = chdir(oldpwd);
 
 		if (a != 0)
 		{
-			printf("bash : not a directory\n");
+			perror(NULL);
 			free_malloc_strings(2, curr_dir, oldpwd);
 			return;
 		}
+		_printf("%s\n", curr_dir);
 		set_directory(curr_dir);
 		free(oldpwd);
 	}
@@ -40,7 +36,10 @@ void change_dir(char **args, char **env __attribute__((unused)))
 
 		if (a != 0)
 		{
-			printf("bash : not a directory\n");
+			char *shell_name = _getenv("_");
+
+			cant_cd_err(count, shell_name, args[1]);
+			free(shell_name);
 			free(curr_dir);
 			return;
 		}
@@ -76,7 +75,7 @@ void cd_home(char *curr_dir)
 
 	if (a != 0)
 	{
-		printf("bash : not a directory\n");
+		perror(NULL);
 		free(curr_dir);
 		free(home);
 		return;

@@ -1,5 +1,5 @@
 #include "main.h"
-
+#include <signal.h>
 /**
  * read_cmd - reads valid output from getline
  * Return: string
@@ -12,7 +12,7 @@ char *read_cmd()
 
 	if (buf == NULL)
 	{
-		kill(getpid(), 2);
+		exit(0);
 	}
 
 	return (buf);

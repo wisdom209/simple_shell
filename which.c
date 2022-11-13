@@ -14,7 +14,6 @@ char *_which(char *search_var, char **env __attribute__((unused)))
 
 	if (search_var[0] == '/' && (search_abs_path(shell_name, search_var) != NULL))
 		return (search_ret);
-
 	free(search_ret);
 	s = _getenv("PATH"), strA = malloc(sizeof(search_var) * 10);
 	paths = _split(s, ":");
@@ -44,7 +43,8 @@ char *_which(char *search_var, char **env __attribute__((unused)))
 			free(checkstr);
 		i++;
 	}
-	printf("%s: No such file or directory\n", shell_name);
+	_printf("%s: ", shell_name);
+	perror(NULL);
 	free_malloc_strings(3, paths, strA, shell_name);
 	return (NULL);
 }
@@ -60,8 +60,6 @@ char *search_abs_path(char *shell_name, char *search_var)
 {
 	if (check_file_access(search_var) != 1)
 	{
-		_printf("%s: No such file or directory\n", shell_name);
-		free(shell_name);
 		return (NULL);
 	}
 	free(shell_name);

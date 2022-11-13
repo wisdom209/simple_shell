@@ -20,7 +20,7 @@ int check_file_access(char *filepath)
  * @readbuf: read buffer
  * Return: 1 on success
  */
-int call_inbuilt_func(char **args, char **env, char readbuf[])
+int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
 {
 	char *s;
 
@@ -28,12 +28,12 @@ int call_inbuilt_func(char **args, char **env, char readbuf[])
 		return (1);
 	if (_strcmp(args[0], "cd") == 0)
 	{
-		change_dir(args, env);
+		change_dir(args, env, count);
 		return (1);
 	}
 	if (_strcmp(args[0], "exit") == 0)
 	{
-		call_exit(args, readbuf);
+		call_exit(args, readbuf, count);
 		return (1);
 	}
 	if (_strcmp(args[0], "setenv") == 0)
@@ -49,11 +49,15 @@ int call_inbuilt_func(char **args, char **env, char readbuf[])
 		free(shell_name);
 		return (1);
 	}
+	if (_strcmp(args[0], "env") == 0 && !args[1])
+	{
+		printenv();
+		return (1);
+	}
 	if (check_unsetenv(args) == 1)
 		return (1);
 
 	s = _which(args[0], environ);
-
 	if (s == NULL)
 		return (1);
 	free(s);
@@ -72,14 +76,30 @@ int check_unsetenv(char **args)
 	{
 		if (args[2])
 		{
-			printf("invalid number of args\n");
+			_printf("invalid number of args\n");
 			return (1);
 		}
 		if (args[1])
 			_unsetenv(args[1]);
 		else
-			printf("invalid input\n");
+			_printf("invalid input\n");
 		return (1);
 	}
 	return (0);
+}
+
+/**
+ * printenv - prints current environment variables
+ *
+ * Return: void
+*/
+void printenv(void)
+{
+	int i = 0;
+
+	while (environ[i] != NULL)
+	{
+		_printf("%s\n", environ[i]);
+		i++;
+	}
 }
