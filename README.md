@@ -41,7 +41,7 @@ sh (Run sh as well)
 ### General
 * A README.md file, at the root of the folder of the project with the description of your project
 * Code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
-* Shell should not have any meory leaks
+* Shell should not have any memory leaks
 * No more than 5 functions per file
 * Use system calls only when you need to (why?)
 * You should have an AUTHORS file at the root of your repository
