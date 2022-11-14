@@ -177,7 +177,20 @@ But also in non-interactive mode:
 * Handle comments (#)
 16. File as input
 * Usage: simple_shell [filename]
+# Installation 🔧
+* Clone the below repository with ```https://github.com/wisdom209/simple_shell.git``` and compile the files into an executable using the GCC compiler. T
 
+## Environment 🌲🌲
+
+* Our shell was built and tested on Ubuntu 22.04 LTS.
+
+## Basic usage 💡
+* First, fork this repository.
+* Then clone it to your local machine.
+* Create an executable by running the following command:
+```gcc -Wall -Werror -Wextra -pedantic *.c -o hsh```
+* From there, type the command below and press the enter button.
+```./hsh```
 ## AUTHORS
 **GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
 **GitHub: [Amure Samuel](https://github.com/khun111)**
