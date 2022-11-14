@@ -190,7 +190,6 @@ But also in non-interactive mode:
 * Create an executable by running the following command:
 ```gcc -Wall -Werror -Wextra -pedantic *.c -o hsh```
 * From there, type this command; ```./hsh``` and press the enter button.
-
 ## AUTHORS
 **GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
 **GitHub: [Oluwatobi Amure](https://github.com/khun111)**
