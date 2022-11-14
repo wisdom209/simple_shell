@@ -178,7 +178,7 @@ But also in non-interactive mode:
 16. File as input
 * Usage: simple_shell [filename]
 # Installation 🔧
-* Clone the below repository with ```https://github.com/wisdom209/simple_shell.git``` and compile the files into an executable using the GCC compiler. T
+* Clone the below repository with ```https://github.com/wisdom209/simple_shell.git``` and compile the files into an executable using the GCC compiler.
 
 ## Environment 🌲🌲
 
@@ -189,8 +189,8 @@ But also in non-interactive mode:
 * Then clone it to your local machine.
 * Create an executable by running the following command:
 ```gcc -Wall -Werror -Wextra -pedantic *.c -o hsh```
-* From there, type the command below and press the enter button.
-```./hsh```
+* From there, type this command; ```./hsh``` and press the enter button.
+
 ## AUTHORS
 **GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
 **GitHub: [Oluwatobi Amure](https://github.com/khun111)**
