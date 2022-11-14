@@ -193,4 +193,4 @@ But also in non-interactive mode:
 ```./hsh```
 ## AUTHORS
 **GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
-**GitHub: [Amure Samuel](https://github.com/khun111)**
+**GitHub: [Oluwatobi Amure](https://github.com/khun111)**
