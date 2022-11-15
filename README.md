@@ -21,7 +21,7 @@ Write a simple UNIX command interpreter.
 man or help:
 sh (Run sh as well)
 
-## Learning Objectives
+## Learning Objectives 📃
 * At the end of this project, you are expected to be able to [explain to anyone](https://alx-intranet.hbtn.io/rltoken/9LNz86CtOTos9oL3zxIO3A), without the help of Google:
 * Who designed and implemented the original Unix operating system
 * Who wrote the first version of the UNIX shell
@@ -37,7 +37,7 @@ sh (Run sh as well)
 * How to execute another program with the execve system call
 * How to suspend the execution of a process until one of its children terminates
 * What is EOF / “end-of-file”?
-## Requirements
+## Requirements 📄
 ### General
 * A README.md file, at the root of the folder of the project with the description of your project
 * Code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
@@ -99,7 +99,7 @@ Same error with your program hsh:
 * wait3 (man 2 wait3)
 * wait4 (man 2 wait4)
 * write (man 2 write)
-## Compilation
+## Compilation 
 Your shell will be compiled this way:
 **gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh**
 ## Testing
