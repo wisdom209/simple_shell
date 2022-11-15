@@ -191,5 +191,5 @@ But also in non-interactive mode:
 ```gcc -Wall -Werror -Wextra -pedantic *.c -o hsh```
 * From there, type this command; ```./hsh``` and press the enter button.
 ## AUTHORS
-**GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
-**GitHub: [Oluwatobi Amure](https://github.com/khun111)**
+**GitHub: [Ononiwu Ifeanyi Wisdom](https://github.com/wisdom209)**
+**GitHub: [Samuel Oluwatobi Amure](https://github.com/khun111)**
