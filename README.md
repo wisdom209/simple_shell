@@ -9,7 +9,7 @@ Write a simple UNIX command interpreter.
 ![Gates of Shell](https://github.com/nifemifaith07/pshell/blob/main/shellA/shell.png)
 
 ^ “The Gates of Shell”, by [Spencer Cheng](https://alx-intranet.hbtn.io/rltoken/AtYRSM03vJDrko9xHodxFQ), featuring [Julien Barbier](https://alx-intranet.hbtn.io/rltoken/-ezXgcyfhc8qU1DeUInLUA)
-## Resources
+## Resources 📚
 [Unix shell](https://alx-intranet.hbtn.io/rltoken/f0YU9TAhniMXWlSXtb64Yw)
 
 [Thompson shell](https://alx-intranet.hbtn.io/rltoken/7LJOp2qP7qHUcsOK2-F3qA3)
