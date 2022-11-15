@@ -99,10 +99,10 @@ Same error with your program hsh:
 * wait3 (man 2 wait3)
 * wait4 (man 2 wait4)
 * write (man 2 write)
-## Compilation 
+## Compilation 👨‍💻
 Your shell will be compiled this way:
 **gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh**
-## Testing
+## Testing ⚙️
 Your shell should work like this in interactive mode:
 
     $ ./hsh
@@ -124,7 +124,7 @@ But also in non-interactive mode:
     hsh main.c shell.c test_ls_2
     hsh main.c shell.c test_ls_2
     $
-## TASKS [This shell works for the first 10 tasks for now]
+## TASKS 🖊️[This shell works for the first 10 tasks for now]
 0. betty would be proud
 * Write a beautiful code that passes the Betty checks
 1. Simple shell 0.1
