@@ -181,7 +181,6 @@ But also in non-interactive mode:
 * Clone the below repository with ```https://github.com/wisdom209/simple_shell.git``` and compile the files into an executable using the GCC compiler.
 
 ## Environment 🌲🌲
-
 * Our shell was built and tested on Ubuntu 22.04 LTS.
 
 ## Basic usage 💡
