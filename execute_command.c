@@ -24,7 +24,7 @@ int exec_cmd(char **args, char *env[], char readbuf[], int *count)
 	{
 		a = 0;
 		/* env_two = copyenv(environ); */
-		location = _which(args[0], environ);
+		location = _which(args[0], environ, count);
 
 		execve(location, args, environ);
 
@@ -39,7 +39,6 @@ int exec_cmd(char **args, char *env[], char readbuf[], int *count)
 	}
 	else
 	{
-		perror("bye\n");
 		exit(1);
 	}
 

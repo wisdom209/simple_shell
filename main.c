@@ -14,7 +14,7 @@ int main(int argc __attribute__((unused)), char **argv, char **env)
 	char *shell_name = argv[0];
 	int count;
 
-	_setenv("_", shell_name, 1);
+	_setenv("shell_name", shell_name, 1);
 	count = 1;
 	while (1)
 	{

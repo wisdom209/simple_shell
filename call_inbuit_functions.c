@@ -18,6 +18,7 @@ int check_file_access(char *filepath)
  * @args: parameter
  * @env: env
  * @readbuf: read buffer
+ * @count: error count
  * Return: 1 on success
  */
 int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
@@ -38,15 +39,12 @@ int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
 	}
 	if (_strcmp(args[0], "setenv") == 0)
 	{
-		char *shell_name = _getenv("_");
-
 		if (args[3])
-			_printf("%s: illegal number of arguments\n", shell_name);
+			illegal_no_args(count, "setenv");
 		else if (args[1] && args[2])
 			_setenv(args[1], args[2], 1);
 		else
-			_printf("%s: illegal number of arguments\n", shell_name);
-		free(shell_name);
+			illegal_no_args(count, "setenv");
 		return (1);
 	}
 	if (_strcmp(args[0], "env") == 0 && !args[1])
@@ -54,10 +52,10 @@ int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
 		printenv();
 		return (1);
 	}
-	if (check_unsetenv(args) == 1)
+	if (check_unsetenv(args, count) == 1)
 		return (1);
 
-	s = _which(args[0], environ);
+	s = _which(args[0], environ, count);
 	if (s == NULL)
 		return (1);
 	free(s);
@@ -67,23 +65,29 @@ int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
 /**
  * check_unsetenv  - checks commands to env
  * @args: arguments given
+ * @count: error count
  *
  * Return: int
  */
-int check_unsetenv(char **args)
+int check_unsetenv(char **args, int *count)
 {
 	if (_strcmp(args[0], "unsetenv") == 0)
 	{
 		if (args[2])
 		{
-			_printf("invalid number of args\n");
+			illegal_no_args(count, "unsetenv");
 			return (1);
 		}
 		if (args[1])
+		{
 			_unsetenv(args[1]);
+			return (1);
+		}
 		else
-			_printf("invalid input\n");
-		return (1);
+		{
+			illegal_no_args(count, "unsetenv");
+			return (1);
+		}
 	}
 	return (0);
 }
@@ -92,7 +96,7 @@ int check_unsetenv(char **args)
  * printenv - prints current environment variables
  *
  * Return: void
-*/
+ */
 void printenv(void)
 {
 	int i = 0;

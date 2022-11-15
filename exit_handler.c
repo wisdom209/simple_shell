@@ -23,10 +23,9 @@ void call_exit(char **args, char readbuf[], int *count)
 		}
 		else if (args[1][0] == '-')
 		{
-			char *shell_name = _getenv("_");
 
-			illegal_no_err(count, shell_name, args[1]);
-			free(shell_name);
+			illegal_no_err(count,  args[1]);
+
 			return;
 		}
 		else
@@ -60,26 +59,20 @@ int handle_exit_num_errors(int a, int *count, char **args)
 
 	if (_isDigit(args[1]) == 0)
 	{
-		char *shell_name = _getenv("_");
-
-		illegal_no_err(count, shell_name, args[1]);
-		free(shell_name);
+		illegal_no_err(count,  args[1]);
 		return (1);
 	}
 	if (a == 0)
 	{
-		char *shell_name = _getenv("_");
-
-		illegal_no_err(count, shell_name, args[1]);
-		free(shell_name);
+		illegal_no_err(count,  args[1]);
 		return (1);
 	}
 	if (a > INT_MAX || _strlen(args[1]) > 10)
 	{
-		char *shell_name = _getenv("_");
 
-		illegal_no_err(count, shell_name, args[1]);
-		free(shell_name);
+
+		illegal_no_err(count, args[1]);
+
 		return (1);
 	}
 	return (0);
