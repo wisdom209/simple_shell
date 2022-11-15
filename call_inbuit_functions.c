@@ -18,6 +18,8 @@ int check_file_access(char *filepath)
  * @args: parameter
  * @env: env
  * @readbuf: read buffer
+ * @count: count
+ *
  * Return: 1 on success
  */
 int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)

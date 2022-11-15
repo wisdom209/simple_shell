@@ -4,6 +4,7 @@
  * change_dir - change directory
  * @args: parameter
  * @env: env
+ * @count: count
  */
 void change_dir(char **args, char **env __attribute__((unused)), int *count)
 {
