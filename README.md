@@ -9,7 +9,7 @@ Write a simple UNIX command interpreter.
 ![Gates of Shell](https://github.com/nifemifaith07/pshell/blob/main/shellA/shell.png)
 
 ^ “The Gates of Shell”, by [Spencer Cheng](https://alx-intranet.hbtn.io/rltoken/AtYRSM03vJDrko9xHodxFQ), featuring [Julien Barbier](https://alx-intranet.hbtn.io/rltoken/-ezXgcyfhc8qU1DeUInLUA)
-## Resources
+## Resources 📚
 [Unix shell](https://alx-intranet.hbtn.io/rltoken/f0YU9TAhniMXWlSXtb64Yw)
 
 [Thompson shell](https://alx-intranet.hbtn.io/rltoken/7LJOp2qP7qHUcsOK2-F3qA3)
@@ -21,7 +21,7 @@ Write a simple UNIX command interpreter.
 man or help:
 sh (Run sh as well)
 
-## Learning Objectives
+## Learning Objectives 📃
 * At the end of this project, you are expected to be able to [explain to anyone](https://alx-intranet.hbtn.io/rltoken/9LNz86CtOTos9oL3zxIO3A), without the help of Google:
 * Who designed and implemented the original Unix operating system
 * Who wrote the first version of the UNIX shell
@@ -37,7 +37,7 @@ sh (Run sh as well)
 * How to execute another program with the execve system call
 * How to suspend the execution of a process until one of its children terminates
 * What is EOF / “end-of-file”?
-## Requirements
+## Requirements 📄
 ### General
 * A README.md file, at the root of the folder of the project with the description of your project
 * Code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl
@@ -67,7 +67,7 @@ Same error with your program hsh:
     $ echo "qwerty" | ./././hsh
     ./././hsh: 1: qwerty: not found
     $
-## List of allowed functions and system calls
+## List of allowed functions and system calls 📄
 * access (man 2 access)
 * chdir (man 2 chdir)
 * close (man 2 close)
@@ -99,10 +99,10 @@ Same error with your program hsh:
 * wait3 (man 2 wait3)
 * wait4 (man 2 wait4)
 * write (man 2 write)
-## Compilation
+## Compilation 👨‍💻
 Your shell will be compiled this way:
 **gcc -Wall -Werror -Wextra -pedantic -std=gnu89 *.c -o hsh**
-## Testing
+## Testing ⚙️
 Your shell should work like this in interactive mode:
 
     $ ./hsh
@@ -124,7 +124,7 @@ But also in non-interactive mode:
     hsh main.c shell.c test_ls_2
     hsh main.c shell.c test_ls_2
     $
-## TASKS [This shell works for the first 10 tasks for now]
+## TASKS 🖊️[This shell works for the first 10 tasks for now]
 0. betty would be proud
 * Write a beautiful code that passes the Betty checks
 1. Simple shell 0.1
@@ -177,7 +177,18 @@ But also in non-interactive mode:
 * Handle comments (#)
 16. File as input
 * Usage: simple_shell [filename]
+# Installation 🔧
+* Clone the below repository with ```https://github.com/wisdom209/simple_shell.git``` and compile the files into an executable using the GCC compiler.
 
+## Environment 🌲🌲
+* Our shell was built and tested on Ubuntu 22.04 LTS.
+
+## Basic usage 💡
+* First, fork this repository.
+* Then clone it to your local machine.
+* Create an executable by running the following command:
+```gcc -Wall -Werror -Wextra -pedantic *.c -o hsh```
+* From there, type this command; ```./hsh``` and press the enter button.
 ## AUTHORS
-**GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
-**GitHub: [Amure Samuel](https://github.com/khun111)**
+**GitHub: [Ononiwu Ifeanyi Wisdom](https://github.com/wisdom209)**
+**GitHub: [Samuel Oluwatobi Amure](https://github.com/khun111)**
