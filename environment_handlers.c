@@ -121,7 +121,6 @@ char *_getenv(char *search_path)
 	{
 		char *tmp_a;
 		char *a = _strdup(environ[i]);
-
 		tmp_a = a;
 		a = _strtok(a, "=");
 

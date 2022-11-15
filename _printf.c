@@ -144,15 +144,5 @@ int print_string(int *i, va_list ptr, const char *format, int *count)
  */
 int _putchar(char c)
 {
-	int fd_num = 1;
-	char *fd = _getenv("_std");
-
-	if (fd)
-		fd_num = atoi(fd);
-
-	write(fd_num, &c, 1);
-
-	free(fd);
-
-	return (0);
+	return (write(1, &c, 1));
 }
