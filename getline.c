@@ -24,7 +24,7 @@ char *read_cmd()
  */
 char *_getline(void)
 {
-	int RL_BUFF_SIZE = 14096, buffsize = RL_BUFF_SIZE, position = 0, r;
+	int RL_BUFF_SIZE = 1024, buffsize = RL_BUFF_SIZE, position = 0, r;
 	char *buffer = malloc(sizeof(char) * buffsize);
 	char c;
 
@@ -43,13 +43,13 @@ char *_getline(void)
 
 		buffer[position] = c;
 		position++;
-		if (position >= buffsize)
+		/* if (position >= buffsize)
 		{
 			buffsize += RL_BUFF_SIZE;
-			buffer = realloc(buffer, buffsize);
+			buffer = _realloc(buffer, buffsize);
 
 			if (!buffer)
 				return (NULL);
-		}
+		} */
 	}
 }

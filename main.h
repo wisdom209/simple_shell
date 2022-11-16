@@ -10,18 +10,11 @@
 #include <unistd.h>
 #include <limits.h>
 
-#define NOT_A_DIRECTORY 1
-#define CANT_CD 2
-#define ILLEGAL_NO 3
-
 extern char **environ;
 void free_malloc_strings(int count, ...);
 char **_split(char *line, char *delimiter);
 char *_strtok(char *str, const char *delim);
 char *read_cmd();
-char **split_lines(char *cmd, char *delimiters);
-int check_token_length(char *str, char *delimiter,
-					   int t_index, int token_size);
 int exec_cmd(char **args, char **env, char readbuf[], int *count);
 char *_which(char *path, char **env);
 char *_getenv(char *search_path);
@@ -34,7 +27,6 @@ void call_exit(char **args, char readbuf[], int *count);
 char *_getline();
 int _printf(const char *format, ...);
 int _putchar(char c);
-int isDelim(char c, char *delim);
 int _setenv(char *env_name, char *env_value, int overwrite);
 int _unsetenv(char *env_name);
 void set_directory(char *curr_dir);

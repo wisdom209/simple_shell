@@ -35,7 +35,6 @@ int exec_cmd(char **args, char *env[], char readbuf[], int *count)
 		int status;
 
 		wait(&status);
-
 	}
 	else
 	{
@@ -45,4 +44,3 @@ int exec_cmd(char **args, char *env[], char readbuf[], int *count)
 
 	return (0);
 }
-
