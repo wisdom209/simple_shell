@@ -1,24 +1,85 @@
-#include "main.h"
+#include "shell.h"
 
 /**
- * cant_cd_err - can't cd error
- * @count: error count
- * @shell_name: shell name
- * @path: path
+ *_eputs - prints an input string
+ * @str: the string to be printed
+ *
+ * Return: Nothing
  */
-void cant_cd_err(int *count, char *shell_name, char *path)
+void _eputs(char *str)
 {
-	_printf("%s: %d: cd: can't cd to %s\n", shell_name, *count, path);
-	*count = *count + 1;
+	int i = 0;
+
+	if (!str)
+		return;
+	while (str[i] != '\0')
+	{
+		_eputchar(str[i]);
+		i++;
+	}
 }
+
 /**
- * illegal_no_err - illegal number error
- * @count: error count
- * @shell_name: shell name
- * @num: num
+ * _eputchar - writes the character c to stderr
+ * @c: The character to print
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
  */
-void illegal_no_err(int *count, char *shell_name, char *num)
+int _eputchar(char c)
 {
-	_printf("%s: %d: exit: Illegal number: %s\n", shell_name, *count, num);
-	*count = *count + 1;
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(2, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
+}
+
+/**
+ * _putfd - writes the character c to given fd
+ * @c: The character to print
+ * @fd: The filedescriptor to write to
+ *
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
+ */
+int _putfd(char c, int fd)
+{
+	static int i;
+	static char buf[WRITE_BUF_SIZE];
+
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(fd, buf, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buf[i++] = c;
+	return (1);
+}
+
+/**
+ *_putsfd - prints an input string
+ * @str: the string to be printed
+ * @fd: the filedescriptor to write to
+ *
+ * Return: the number of chars put
+ */
+int _putsfd(char *str, int fd)
+{
+	int i = 0;
+
+	if (!str)
+		return (0);
+	while (*str)
+	{
+		i += _putfd(*str++, fd);
+	}
+	return (i);
 }
