@@ -1,7 +1,7 @@
 B.\"Manpage for simple shell 
-.\"Created by Abel Berhanu and Amir Mohammed
+.\"Created by Oluwatobi Amure and Ononiwu Wisdom
 
-.TH SODASH 1 "May 10 2022" "sila SHELL - Simple Shell man page"
+.TH SODASH 1 "November 14 2022" "sila SHELL - Simple Shell man page"
 
 .SH NAME
 sila\fR \- simple UNIX command interpreter
