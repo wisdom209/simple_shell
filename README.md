@@ -68,7 +68,7 @@ Same error with your program hsh:
     ./././hsh: 1: qwerty: not found
     $
 ## List of allowed functions and system calls
- access (man 2 access)
+* access (man 2 access)
 * chdir (man 2 chdir)
 * close (man 2 close)
 * closedir (man 3 closedir)
