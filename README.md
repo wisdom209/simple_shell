@@ -177,7 +177,6 @@ But also in non-interactive mode:
 * Handle comments (#)
 16. File as input
 * Usage: simple_shell [filename]
-
 ## AUTHORS
 **GitHub: [Ononiwu Wisdom](https://github.com/wisdom209)**
-**GitHub: [Amure Samuel](https://github.com/khun111)**
+**GitHub: [Oluwatobi Amure](https://github.com/khun111)**
