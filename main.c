@@ -1,73 +1,74 @@
 #include "main.h"
+#include "errno.h"
+
+void handle_non_interactive(int shell_interaction,
+							int argc, char *cmd, char **args, char **env, int *count);
 
 /**
- * free_data - frees data structure
- *
- * @datash: data structure
- * Return: no return
+ * main - main function
+ * @argc: argument count
+ * @argv: array of argument strings
+ * @env: environment variables
+ * Return: 0 on success
  */
-void free_data(data_shell *datash)
+int main(int argc __attribute__((unused)), char **argv, char **env)
 {
-	unsigned int i;
+	char *cmd = NULL;
+	char **args = NULL;
+	char *shell_name = argv[0];
+	int count;
+	int shell_interaction;
 
-	for (i = 0; datash->_environ[i]; i++)
+	_setenv("_", shell_name, 1);
+	count = 1;
+
+	shell_interaction = isatty(STDIN_FILENO);
+
+	handle_non_interactive(shell_interaction, argc, cmd, args, env, &count);
+
+	while (1)
 	{
-		free(datash->_environ[i]);
+		if (isatty(STDIN_FILENO) != 0)
+			write(STDOUT_FILENO, "$ ", 3);
+
+		cmd = read_cmd();
+
+		args = _split(cmd, " \t\f\v\a");
+
+		exec_cmd(args, env, cmd, &count);
+		free(args);
+		free(cmd);
 	}
 
-	free(datash->_environ);
-	free(datash->pid);
+	return (0);
 }
 
-/**
- * set_data - Initialize data structure
- *
- * @datash: data structure
- * @av: argument vector
- * Return: no return
- */
-void set_data(data_shell *datash, char **av)
+void handle_non_interactive(int shell_interaction,
+							int argc, char *cmd, char **args, char **env, int *count)
 {
-	unsigned int i;
-
-	datash->av = av;
-	datash->input = NULL;
-	datash->args = NULL;
-	datash->status = 0;
-	datash->counter = 1;
-
-	for (i = 0; environ[i]; i++)
-		;
-
-	datash->_environ = malloc(sizeof(char *) * (i + 1));
-
-	for (i = 0; environ[i]; i++)
+	if (shell_interaction == 0 && argc == 1) /* if non-interactive */
 	{
-		datash->_environ[i] = _strdup(environ[i]);
+		int exit_code = 0;
+		char *exitchar;
+
+		exitchar = _getenv("err_code");
+
+		if (exitchar != NULL)
+		{
+			exit_code = atoi(exitchar);
+			free(exitchar);
+		}
+
+		while ((cmd = read_cmd()) != NULL) /* grabs input */
+		{
+			args = _split(cmd, " \t\n\a\r\f\v");
+
+			exec_cmd(args, env, cmd, count);
+
+			free(args);
+			free(cmd);
+		}
+
+		exit(exit_code);
 	}
-
-	datash->_environ[i] = NULL;
-	datash->pid = aux_itoa(getpid());
-}
-
-/**
- * main - Entry point
- *
- * @ac: argument count
- * @av: argument vector
- *
- * Return: 0 on success.
- */
-int main(int ac, char **av)
-{
-	data_shell datash;
-	(void) ac;
-
-	signal(SIGINT, get_sigint);
-	set_data(&datash, av);
-	shell_loop(&datash);
-	free_data(&datash);
-	if (datash.status < 0)
-		return (255);
-	return (datash.status);
 }
