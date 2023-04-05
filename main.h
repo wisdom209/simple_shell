@@ -14,6 +14,16 @@
 #define CANT_CD 2
 #define ILLEGAL_NO 3
 
+/**
+ * _globs - global struct
+ * @exitcode: exit code
+ */
+struct s_globs
+{
+	int exitcode;
+};
+
+typedef struct s_globs t_globs;
 extern char **environ;
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int isDelim(char c, const char *delim);
@@ -24,11 +34,11 @@ char *read_cmd();
 char **split_lines(char *cmd, char *delimiters);
 int check_token_length(char *str, char *delimiter,
 					   int t_index, int token_size);
-int exec_cmd(char **args, char **env, char readbuf[], int *count);
-char *_which(char *path, char **env, int *count);
+int exec_cmd(char **args, char **env, char readbuf[], int *count, t_globs *glbs);
+char *_which(char *path, char **env, int *count, t_globs *glbs);
 char *_getenv(char *search_path);
 int check_file_access(char *filepath);
-int call_inbuilt_func(char **args, char **env, char readbuf[], int *count);
+int call_inbuilt_func(char **args, char **env, char readbuf[], int *count, t_globs *glbs);
 char *search_abs_path(char *shell_name, char *search_var);
 void concat_malloc_str(char *str, char *first_str, char *sec_str);
 void change_dir(char **args, char **env, int *count);
@@ -53,7 +63,7 @@ int print_num(long num, int *count);
 int print_string(int *i, va_list ptr, const char *format, int *count);
 void cant_cd_err(int *count, char *shell_name, char *path);
 void illegal_no_err(int *count, char *shell_name, char *num);
-void command_not_found_err(int *count, char *shell_name, char *cmd);
+void command_not_found_err(int *count, char *shell_name, char *cmd, t_globs *glbs);
 void printenv(void);
 int handle_exit_num_errors(int a, int *count, char **args);
 int _isDigit(char *s);

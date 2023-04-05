@@ -1,0 +1,5 @@
+Makefile
+main
+test*
+allowed_func*
+trim_strings*

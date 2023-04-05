@@ -7,12 +7,14 @@
  * @env: env
  * @readbuf: input buffer
  * @count: error count
+ * @glbs: global vars
  *
  * Return: 0 on success
  */
-int exec_cmd(char **args, char *env[], char readbuf[], int *count)
+int exec_cmd(char **args, char *env[], char readbuf[],
+			 int *count, t_globs *glbs)
 {
-	int a = call_inbuilt_func(args, env, readbuf, count);
+	int a = call_inbuilt_func(args, env, readbuf, count, glbs);
 	int status;
 	char *location;
 	pid_t ch_pid;
@@ -26,7 +28,7 @@ int exec_cmd(char **args, char *env[], char readbuf[], int *count)
 	{
 		a = 0;
 
-		location = _which(args[0], environ, count);
+		location = _which(args[0], environ, count, glbs);
 		execve(location, args, environ);
 		exit(-1);
 	}

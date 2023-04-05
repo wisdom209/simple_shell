@@ -33,8 +33,10 @@ void illegal_no_err(int *count, char *shell_name, char *num)
  * @count: error count
  * @shell_name: shell name
  * @cmd: num
+ * @glbs: global vars
  */
-void command_not_found_err(int *count, char *shell_name, char *cmd)
+void command_not_found_err(int *count, char *shell_name,
+						   char *cmd, t_globs * glbs)
 {
 	_setenv("std_err", "1", 1);
 	errno = 127;
@@ -42,4 +44,5 @@ void command_not_found_err(int *count, char *shell_name, char *cmd)
 	_unsetenv("std_err");
 	*count = *count + 1;
 	_setenv("err_code", "127", 1);
+	glbs->exitcode = 127;
 }

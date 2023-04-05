@@ -4,50 +4,43 @@
  * @search_var: parameter
  * @env: env
  * @count: error count
+ * @glbs: global vars
  *
  * Return: path string
  */
-char *_which(char *search_var, char **env __attribute__((unused)), int *count)
+char *_which(char *search_var, char **env __attribute__((unused)),
+			 int *count, t_globs *glbs)
 {
 	int i = 0;
 	char *s = NULL, *strA = NULL, *shell_name = _getenv("_");
-	char **paths;
-	char *search_ret = _strdup(search_var);
+	char **paths, *search_ret = _strdup(search_var);
 
 	if (search_var[0] == '/' && (search_abs_path(shell_name, search_var) != NULL))
 		return (search_ret);
 	free(search_ret);
 	s = _getenv("PATH"), strA = malloc(sizeof(search_var) * 10);
+	if (s == NULL)
+		return (command_not_found_err(count, shell_name, search_var, glbs),
+				free_malloc_strings(2, shell_name, strA), NULL);
 	paths = _split(s, ":");
 	if (strA == NULL || paths == NULL)
-	{
-		command_not_found_err(count, shell_name, search_var);
-		free_malloc_strings(3, paths, shell_name, s);
-		return (NULL);
-	}
+		return (command_not_found_err(count, shell_name, search_var, glbs),
+				free_malloc_strings(3, paths, shell_name, s), NULL);
 	concat_malloc_str(strA, "/", search_var);
 	while (paths[i])
 	{
 		char *checkstr = malloc(1024);
 
 		if (checkstr == NULL)
-		{
-			free_malloc_strings(3, paths, shell_name, s);
-			return (NULL);
-		}
+			return (free_malloc_strings(3, paths, shell_name, s), NULL);
 		concat_malloc_str(checkstr, paths[i], strA);
 		if (check_file_access(checkstr) == 1)
-		{
-			free_malloc_strings(4, paths, strA, shell_name, s);
-			return (checkstr);
-		}
-		else
-			free(checkstr);
+			return (free_malloc_strings(4, paths, strA, shell_name, s), checkstr);
+		free(checkstr);
 		i++;
 	}
-	command_not_found_err(count, shell_name, search_var);
-	free_malloc_strings(4, paths, strA, shell_name, s);
-	return (NULL);
+	return (command_not_found_err(count, shell_name, search_var, glbs),
+			free_malloc_strings(4, paths, strA, shell_name, s), NULL);
 }
 
 /**

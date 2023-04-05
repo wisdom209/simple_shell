@@ -64,7 +64,6 @@ size_t _strspn(const char *s, const char *accept)
 			return (count);
 		++count;
 	}
-
 	return (count);
 }
 /**

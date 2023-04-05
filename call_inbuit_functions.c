@@ -19,10 +19,12 @@ int check_file_access(char *filepath)
  * @env: env
  * @readbuf: read buffer
  * @count: error count
+ * @glbs: global vars
  *
  * Return: 1 on success
  */
-int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
+int call_inbuilt_func(char **args, char **env, char readbuf[],
+					  int *count, t_globs *glbs)
 {
 	char *s;
 
@@ -58,8 +60,7 @@ int call_inbuilt_func(char **args, char **env, char readbuf[], int *count)
 	}
 	if (check_unsetenv(args) == 1)
 		return (1);
-
-	s = _which(args[0], environ, count);
+	s = _which(args[0], environ, count, glbs);
 	if (s == NULL)
 		return (1);
 	free(s);
@@ -94,7 +95,7 @@ int check_unsetenv(char **args)
  * printenv - prints current environment variables
  *
  * Return: void
-*/
+ */
 void printenv(void)
 {
 	int i = 0;
