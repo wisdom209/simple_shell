@@ -36,7 +36,7 @@ void illegal_no_err(int *count, char *shell_name, char *num)
  * @glbs: global vars
  */
 void command_not_found_err(int *count, char *shell_name,
-						   char *cmd, t_globs * glbs)
+						   char *cmd, t_globs *glbs)
 {
 	_setenv("std_err", "1", 1);
 	errno = 127;
